@@ -6,4 +6,4 @@ slug: about
 categories: []
 tags: []
 ---
-Some notes that I wish were available to me as I was trying to understand some of these topics.
+Some notes that I wish were available to me as I was trying to understand some of these topics. 
