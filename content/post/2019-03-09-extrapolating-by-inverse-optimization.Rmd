@@ -1,0 +1,27 @@
+---
+title: Extrapolating by Inverse Optimization
+author: Harsha Veeramachaneni
+date: '2019-03-09'
+slug: extrapolating-by-inverse-optimization
+categories: []
+tags:
+  - Optimization
+  - Linear programming
+---
+Let us imagine a grocer trying to esimate the impacts of pricing her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
+
+The collected data looks something like the following (the prices and quantities are for _all_ the products the grocer sells). 
+
+```{r echo=F, results="asis"}
+library(knitr)
+df = data.frame(Date = c("Jan 1", "Jan 2", "Feb 1", "..."), Customer.ID = c("XYZ", "ABC", "XYZ", "..."), Price.Vector = c("[$3.2, $2.5, $1.0, ...]", "[$2.0, $2.0, $1.5, ...]", "[$2.5, $2.0, $1.8, ...]", "..."), Quantity.Vector=c("[1 lb, 0.0 lb, 0.0 lb, ...]", "[0.0 lb, 0.0 lb, 0.5 lb, ...]",  "[1.0 lb, 0.0 lb, 0.1 lb, ...]", "..."))
+kable(df)
+```
+
+The data scientist friend doesn't see what the big problem is. He builds deep learning models in his sleep and this seems like a simple regression problem. He could just build a machine to predict the quantities column from the price column and take the afternoon off. 
+
+Alas it was not to be; the price vectors the grocer wants to plug into the trained regression model are well outside the ranges of the ones she provided the data scientist for training. Or what is the point of any such modeling? She is appalled by the resulting nonsensical predictions that her friend, a Ph.D. in data science no less, claims were produced by algorithms indistinguishable from the ones that in the near future will drive her around town.
+
+
+
+
