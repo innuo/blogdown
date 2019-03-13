@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Extrapolating by Inverse Optimization | Notes To An Earlier Self</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Extrapolating by Inverse Optimization</span></h1>
+
+<h2 class="date">2019/03/09</h2>
+</div>
+
+<main>
+
+
+
+<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, peppered with snide remarks about data science as it is commonly practiced.</em></p>
+<p>Let us imagine a grocer (let’s call her Alice) trying to esimate the impacts of changing the pricing of her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</p>
+<p>The collected data looks something like the following. (In each row the prices and quantities are for <em>all</em> the products Alice sells.)</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Date</th>
+<th align="left">Customer.ID</th>
+<th align="left">Price.Vector</th>
+<th align="left">Quantity.Vector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Jan 1</td>
+<td align="left">XYZ</td>
+<td align="left">[$3.2, $2.5, $1.0, …]</td>
+<td align="left">[1 lb, 0.0 lb, 0.0 lb, …]</td>
+</tr>
+<tr class="even">
+<td align="left">Jan 8</td>
+<td align="left">ABC</td>
+<td align="left">[$2.0, $2.0, $1.5, …]</td>
+<td align="left">[0.0 lb, 0.0 lb, 0.5 lb, …]</td>
+</tr>
+<tr class="odd">
+<td align="left">Feb 4</td>
+<td align="left">XYZ</td>
+<td align="left">[$2.5, $2.0, $1.8, …]</td>
+<td align="left">[1.0 lb, 0.0 lb, 0.1 lb, …]</td>
+</tr>
+<tr class="even">
+<td align="left">…</td>
+<td align="left">…</td>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+</tbody>
+</table>
+<p>The data scientist friend doesn’t see what the big problem is. He builds deep learning models in his sleep and this seems like a simple regression problem. He could just build a machine to predict the quantities column from the price column and take the afternoon off.</p>
+<p>Alas it was not to be; the price vectors that Alice wants to plug into the trained regression model are well outside the ranges of the ones she provided the data scientist for training. She does not see the point of any such modeling if it doesn’t enable extrapolation. She is appalled by the resulting nonsensical predictions, that her friend assures her were produced by algorithms indistinguishable from the ones that in the near future will drive her around town.</p>
+<div id="a-physics-of-purchase-behavior" class="section level2">
+<h2>A Physics of Purchase Behavior</h2>
+<p>Alice decides to take a less shallow approach and write out what she knows about the problem and how it relates to what she wishes to estimate.</p>
+<p>She reasons that each of her customers <span class="math inline">\(\smash{c_i}\)</span> has a weekly budget <span class="math inline">\(\smash{b_{i}}\)</span> for produce (<span class="math inline">\(\smash{t}\)</span> stands for the date of the store visit) and a personal produce value vector <span class="math inline">\(\smash{v_i}\)</span>. (She makes the simplifying asssumption that the budget does not vary from week to week.) Each customer may have their individual constraints on the purchases</p>
+<p>She hypothesizes that a customer on every weekly visit looks at the produce price vector <span class="math inline">\(\smash{p_t}\)</span>, and mentally runs a simple optimization of the following form to decide what quantities of each item of produce (<span class="math inline">\(\tilde{x}_{it}\)</span>) he will purchase:</p>
+<p><span class="math display">\[\begin{aligned}
+\tilde{x}_{it} &amp;= \mbox{maximize}_x f(x, v_i) \\
+\mbox{subject to} &amp;\;\; \smash{p_t&#39;} x \leq b_{i}
+\end{aligned}
+\]</span></p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.name/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.name/js/center-img.js"></script>
+
+  
+  <hr/>
+  &copy; Harsha Veeramachaneni 2019 <a href="https://github.com/rstudio/blogdown">blogdown</a> &amp; <a href="https://gohugo.io/">Hugo</a>
+  
+  </footer>
+  </body>
+</html>
+
