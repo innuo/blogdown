@@ -3,15 +3,16 @@ title: Extrapolating by Inverse Optimization
 author:
 date: '2019-03-09'
 slug: extrapolating-by-inverse-optimization
-categories: []
+categories: [Optimization, Bayesian]
 tags:
-  - Optimization
+  - Inverse Optimization
   - Linear programming
+  - Explainable Models
 ---
 *Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, peppered with snide remarks about data science as it is commonly practiced.* 
 
 
-Let us imagine a grocer (let's call her Alice) trying to esimate the impacts of changing the pricing of her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
+Let us imagine a grocer (let's call her Alice) trying to esimate the impacts of changing the prices of her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
 
 The collected data looks something like the following. (In each row the prices and quantities are for _all_ the products Alice sells.)
 
@@ -29,14 +30,46 @@ A Physics of Purchase Behavior
 ------------------------------
 Alice decides to take a less shallow approach and write out what she knows about the problem and how it relates to what she wishes to estimate. 
 
-She reasons that each of her customers $\smash{c_i}$ has a weekly budget $\smash{b_{i}}$ for produce ($\smash{t}$ stands for the date of the store visit) and a personal produce value vector $\smash{v_i}$. (She makes the simplifying asssumption that the budget does not vary from week to week.) Each customer may have their individual constraints on the purchases 
+She reasons that each of her customers $\smash{c_i}$ has a weekly budget $\smash{b_{i}}$ for produce ($\smash{t}$ stands for the date of the store visit) and a personal produce value vector $\smash{v_i}$. (She makes the simplifying asssumption that the budget does not vary from week to week.) Each customer may have other individual constraints on the purchases (e.g., at least $3$ lb of fruit, no more than $2$ lb of perishables.)
 
-She hypothesizes that a customer on every weekly visit looks at the produce price vector $\smash{p_t}$, and mentally runs a simple optimization of the following form to decide what quantities of each item of produce ($\tilde{x}_{it}$) he will purchase:  
+She hypothesizes that a customer on every weekly visit looks at the produce price vector $\smash{p_t}$, and mentally runs a simple optimization of the following form to decide what quantities of each item of produce ($x_{it}$) he will purchase:  
 
 $$\begin{aligned}
-\tilde{x}_{it} &= \mbox{maximize}_x f(x, v_i) \\
-\mbox{subject to} &\;\; \smash{p_t'} x \leq b_{i}
+x_{it} &= \mbox{maximize}_x \; v_i^T x \\
+\mbox{subject to} &\;\; \smash{p_t^T} x \leq b_{i} \\
+&\; \; A x \leq d_i
 \end{aligned}
 $$
 
+The last constraint captures the notion of the customer-specific constraints mentioned above, where $A$ is assumed known (since its rows define common purchase constraints) while the constraint bounds $d_i$ are not known. 
 
+The above optimization problem with a linear objective and constraints is called a _Linear Program_ for which there exist very efficient solvers. For example, here's a basic implementation of a linear program in R
+
+```{r message=FALSE}
+library(CVXR)
+
+x <- Variable(2) #only two products 
+v <- c(0.1, 0.9)
+value <- sum(v * x)
+
+p <- c(3, 2)
+constr_budget <- sum(p * x) <= 10
+
+A <- rbind(c(1, 0), c(0, 1))
+b <- c(2, 4)
+constr_other <- A %*% x <= b
+
+solution <- solve(Problem(Maximize(value), list(constr_budget, constr_other)))
+cat(paste0('Status: ', solution$status))
+cat(paste0(round(solution$getValue(x), 2)))
+```
+
+
+
+That is, if for any customer Alice knew the parameters of _their_ optimization problem ($v_i$ up to a normalizing scalar, $b_i$ and $d_i$) then predicting the purchase behavior is easy. It just involves solving the above problem for any price vector of interest $p$ to obtain a prediction of that customer's purchase quantity vector $x_i$. Note that, albeit esoteric, the optimizer defines a family of regression functions $x_i = Opt(p_t; \theta)$ parameterized by $\theta = (v_i, b_i, d_i)$. 
+
+Therefore the problem of _learning_ the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it attempts to _invert_ the optimization step, is studied under the heading _Inverse Optimization_.  
+
+Trading Brain Damage for Computer Costs
+------------------------------
+Alice codes up the $Opt(.)$ function first in the hope that when she comes up with a way to estimate the parameters, she would be ready with the prediction function. She quickly realizes that a simple approach to estimate the parameters is the following. First select some sensible ranges for the various parameters (knowing the neighborhood well she has a good sense of what reasonable budgets, value vectors )
