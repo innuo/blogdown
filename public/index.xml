@@ -17,8 +17,8 @@
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/03/09/extrapolating-by-inverse-optimization/</guid>
-      <description>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, peppered with snide remarks about data science as it is commonly practiced.
-Let us imagine a grocer (let’s call her Alice) trying to esimate the impacts of changing the prices of her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</description>
+      <description>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, mottled with snide remarks about data science as it is commonly practiced.
+Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help.</description>
     </item>
     
     <item>

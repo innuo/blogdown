@@ -35,8 +35,8 @@
 
 
 
-<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, peppered with snide remarks about data science as it is commonly practiced.</em></p>
-<p>Let us imagine a grocer (let’s call her Alice) trying to esimate the impacts of changing the prices of her produce on the purchase behavior of her customers. Following the advice of her data scientist friend she gathers her database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</p>
+<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation, mottled with snide remarks about data science as it is commonly practiced.</em></p>
+<p>Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</p>
 <p>The collected data looks something like the following. (In each row the prices and quantities are for <em>all</em> the products Alice sells.)</p>
 <table>
 <thead>
@@ -75,7 +75,7 @@
 </tbody>
 </table>
 <p>The data scientist friend doesn’t see what the big problem is. He builds deep learning models in his sleep and this seems like a simple regression problem. He could just build a machine to predict the quantities column from the price column and take the afternoon off.</p>
-<p>Alas it was not to be; the price vectors that Alice wants to plug into the trained regression model are well outside the ranges of the ones she provided the data scientist for training. She does not see the point of any such modeling if it doesn’t enable extrapolation. She is appalled by the resulting nonsensical predictions, that her friend assures her were produced by algorithms indistinguishable from the ones that in the near future will drive her around town.</p>
+<p>Alas it was not to be; the price vectors that Alice wants to plug into the trained regression model are well outside the ranges of those that she provided the data scientist for training. She does not see the point of any such modeling if it doesn’t enable extrapolation. She is appalled by the resulting nonsensical predictions, that her friend assures her were produced by algorithms indistinguishable from the ones that in the near future will drive her around town.</p>
 <div id="a-physics-of-purchase-behavior" class="section level2">
 <h2>A Physics of Purchase Behavior</h2>
 <p>Alice decides to take a less shallow approach and write out what she knows about the problem and how it relates to what she wishes to estimate.</p>
@@ -88,31 +88,47 @@ x_{it} &amp;= \mbox{maximize}_x \; v_i^T x \\
 \end{aligned}
 \]</span></p>
 <p>The last constraint captures the notion of the customer-specific constraints mentioned above, where <span class="math inline">\(A\)</span> is assumed known (since its rows define common purchase constraints) while the constraint bounds <span class="math inline">\(d_i\)</span> are not known.</p>
-<p>The above optimization problem with a linear objective and constraints is called a <em>Linear Program</em> for which there exist very efficient solvers. For example, here’s a basic implementation of a linear program in R</p>
+<p>The above optimization problem with a linear objective and constraints is called a <em>Linear Program</em> for which there exist very efficient solvers. For a basic implementation of a linear program in R see Appendix below.</p>
+<p>That is, if for any customer Alice knew the parameters of <em>their</em> optimization problem (<span class="math inline">\(v_i\)</span> up to a normalizing scalar, <span class="math inline">\(b_i\)</span> and <span class="math inline">\(d_i\)</span>) then predicting the purchase behavior is easy. It just involves solving the above problem for any price vector of interest <span class="math inline">\(p\)</span> to obtain a prediction of that customer’s purchase quantity vector <span class="math inline">\(x_i\)</span>. Note that, albeit esoteric, the optimizer defines a family of regression functions <span class="math inline">\(x_i = Opt(p_t; \theta)\)</span> parameterized by <span class="math inline">\(\theta = (v_i, b_i, d_i)\)</span>, in principle, no different from any other family.</p>
+<p>Therefore the problem of <em>learning</em> the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it is posed as <em>inverting</em> the optimization procedure, is studied under the heading <em>Inverse Optimization</em>.</p>
+<p>(The term engineers use for this <em>inverting</em> process, that is estimating the parameters of a system from observations, is <em>System Identification</em>. Although many of the techniques that engineers use exploit some special structure of their systems, their <em>task</em> is exactly the same as Alice’s.)</p>
+</div>
+<div id="bayesianism-as-commonsense" class="section level2">
+<h2>Bayesianism as Commonsense</h2>
+<p>Alice first codes up the <span class="math inline">\(Opt(.)\)</span> function in the hope that when she comes up with a way to estimate the parameters, she would be ready with the prediction function. She quickly realizes that a simple approach to estimate the parameters is the following. First select some sensible ranges for the various parameters (knowing the neighborhood well she has a good sense of what reasonable budgets, value vectors etc.), sample a vector of parameters within that range and run the function <span class="math inline">\(Opt(.)\)</span> over the prices in her dataset. If the resulting quantity predictions are <em>close</em> to those in the data, keep the parameter vector, else discard it. We can view this procedure as sampling, followed by running the <span class="math inline">\(Opt(.)\)</span> regression function (which I will call <em>simulation</em>, because it simulates the purchase behavior), followed by filtering the samples that do not yield data close to the historical record (the observations).</p>
+<p>After running this <em>sample-simulate-filter</em> process on a large number of samples she will have a set of parameter vectors which produced data that looks like her database, that is a set of parameter vectors <em>compatible</em> with her data. If this set ends up being clustered around some value (i.e., if <em>very</em> different parameter settings do not end up producing data close to the observations), then she could choose the mean of the filtered parameter set as her estimate. Problem solved.</p>
+<p>In fact, she reasons, that instead of taking the mean of the filtered parameter vectors, she could use them to estimate her uncertainty in the predictions from her regression function. For a price vector that she would like to plug into her regression function, she could run the <span class="math inline">\(Opt(.)\)</span> function over a sample of compatible parameter vectors and use the range of the predicted values as her measure of uncertainty.</p>
+<p>Although Alice is unware of it, she not only independently derived the fundaments of Bayesian reasoning from commonsense, but a particular <em>computational</em> approach to Bayesian estimation. An entire subfield of Bayesian statistics called <em>Approximate Bayesian Computation (ABC)</em> is dedicated to Alice’s sample-simulate-filter method, with the goal of making it computationally feasible. Note how the <em>ABC</em> approach can be applied to invert any parameterized simulator, at least in principle. This generality is paid for in computational costs.</p>
+<p><strong>A Quick Aside on Identifiability</strong>. <em>Identifiability</em> is a topic that statisticians like to obsess over in their work, resulting in a thicket of abstruse procedures for practitioners to follow to avoid a dull feeling of insufficient diligence.</p>
+<p>From a Bayesian vantage the commonsense way to think about identifiability is captured in a statement made above – <em>very</em> different parameter settings do not end up producing data close to the observations. In fact, it is even a bit milder than that. Loosely speaking, for the kinds of extrapolations we wish to perform with the learned model (i.e, simulator + compatible parameter vectors), if the predictions on any input from <em>most</em> of the compatible parameter vectors are <em>similar</em>, then for practical purposes the model is identified.</p>
+<p>Identifiability in a Bayesian setting is a function of the prior, the simulator, and the observed data. If we can disallow parts of the parameter space which end up being compatible with the data by some external considerations, or if we are able to collect more of the right kind of data, we can recover idenfitiability. If neither is possible, the only hope is to restrict the simulator by reparameterization and only gain partial knowledge about the system being studied.</p>
+</div>
+<div id="saving-on-aws-costs" class="section level2">
+<h2>Saving on AWS Costs</h2>
+<p>As I alluded to above, the ABC procedure can be very computionally demanding when the amount of observed data or the number of parameters is large. Consequently for models (priors + simulators) for which we can know a little bit more, statisticians and engineers have come up with a host of techniques to speed up the estimation process. For example, if the simulation function is such that we can compute the <em>likelihood</em>, that is the proabability of the observations for a given parameter vector, techniques like Markov-Chain Monte Carlo (MCMC) or Variational Bayes can exploit that fact for a speedy estimation of the model posterior (which is a specification of the parameter vectors compatible with the observed data.) I won’t go any more into these techniques here than pointing to <a href="https://mlstatold.blogspot.com/2018/05/a-short-presentation-on-probabilistic.html">my presentation</a> on variational inference.</p>
+</div>
+<div id="appendix" class="section level2">
+<h2>Appendix:</h2>
+<p>Example R code on which to base Alice’s <span class="math inline">\(Opt(.)\)</span> function.</p>
 <pre class="r"><code>library(CVXR)
 
 x &lt;- Variable(2) #only two products 
-v &lt;- c(0.1, 0.9)
-value &lt;- sum(v * x)
+v &lt;- c(0.1, 0.9) #value vector
+value &lt;- sum(v * x) #total value that the customer optimizes
 
-p &lt;- c(3, 2)
-constr_budget &lt;- sum(p * x) &lt;= 10
+p &lt;- c(3, 2)  #prices of the two products
+constr_budget &lt;- sum(p * x) &lt;= 10 #budget no more than $10
 
 A &lt;- rbind(c(1, 0), c(0, 1))
 b &lt;- c(2, 4)
-constr_other &lt;- A %*% x &lt;= b
+constr_other &lt;- A %*% x &lt;= b #other constraints
 
-solution &lt;- solve(Problem(Maximize(value), list(constr_budget, constr_other)))
-cat(paste0(&#39;Status: &#39;, solution$status))</code></pre>
-<pre><code>## Status: optimal</code></pre>
-<pre class="r"><code>cat(paste0(round(solution$getValue(x), 2)))</code></pre>
-<pre><code>## 0.67 4</code></pre>
-<p>That is, if for any customer Alice knew the parameters of <em>their</em> optimization problem (<span class="math inline">\(v_i\)</span> up to a normalizing scalar, <span class="math inline">\(b_i\)</span> and <span class="math inline">\(d_i\)</span>) then predicting the purchase behavior is easy. It just involves solving the above problem for any price vector of interest <span class="math inline">\(p\)</span> to obtain a prediction of that customer’s purchase quantity vector <span class="math inline">\(x_i\)</span>. Note that, albeit esoteric, the optimizer defines a family of regression functions <span class="math inline">\(x_i = Opt(p_t; \theta)\)</span> parameterized by <span class="math inline">\(\theta = (v_i, b_i, d_i)\)</span>.</p>
-<p>Therefore the problem of <em>learning</em> the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it attempts to <em>invert</em> the optimization step, is studied under the heading <em>Inverse Optimization</em>.</p>
-</div>
-<div id="trading-brain-damage-for-computer-costs" class="section level2">
-<h2>Trading Brain Damage for Computer Costs</h2>
-<p>Alice codes up the <span class="math inline">\(Opt(.)\)</span> function first in the hope that when she comes up with a way to estimate the parameters, she would be ready with the prediction function. She quickly realizes that a simple approach to estimate the parameters is the following. First select some sensible ranges for the various parameters (knowing the neighborhood well she has a good sense of what reasonable budgets, value vectors )</p>
+solution &lt;- solve(Problem(Maximize(value), list(constr_budget, constr_other))) #solve for value maximization
+
+cat(paste0(&#39;Status: &#39;, solution$status))
+## Status: optimal
+cat(paste0(round(solution$getValue(x), 2))) #print optimal quantity vector
+## 0.67 4</code></pre>
 </div>
 
 </main>
