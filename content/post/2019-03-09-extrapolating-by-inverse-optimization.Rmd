@@ -7,7 +7,7 @@ categories: [Optimization, Bayesian]
 tags:
   - Inverse Optimization
   - Linear programming
-  - Explainable Models
+  - Approximate Bayesian Computation
 ---
 *Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation.* 
 
