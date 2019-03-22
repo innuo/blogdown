@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Approximate Bayesian Computation on Notes To An Earlier Self</title>
+    <link>/tags/approximate-bayesian-computation/</link>
+    <description>Recent content in Approximate Bayesian Computation on Notes To An Earlier Self</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/approximate-bayesian-computation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Extrapolating by Inverse Optimization</title>
+      <link>/post/2019/03/09/extrapolating-by-inverse-optimization/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/03/09/extrapolating-by-inverse-optimization/</guid>
+      <description>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation.
+Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help.</description>
+    </item>
+    
+  </channel>
+</rss>
