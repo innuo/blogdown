@@ -8,11 +8,12 @@ tags:
   - Inverse Optimization
   - Linear programming
   - Approximate Bayesian Computation
+  - Bilevel Optimization
 ---
 
 
 
-<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, with a brief detour into Bayesian estimation.</em></p>
+<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.</em></p>
 <p>Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</p>
 <p>The collected data looks something like the following. (In each row the prices and quantities are for <em>all</em> the products Alice sells.)</p>
 <table>
@@ -64,8 +65,8 @@ x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 &amp;\; \; A x \leq d_i
 \end{aligned}
 \]</span></p>
-<p>The last constraint captures the notion of the customer-specific constraints mentioned above, where <span class="math inline">\(A\)</span> is assumed known (since its rows define common purchase constraints) while the constraint bounds <span class="math inline">\(d_i\)</span> are not known.</p>
-<p>The above optimization problem with a linear objective and constraints is called a <em>Linear Program</em> for which there exist very efficient solvers. For a basic implementation of a linear program in R see Appendix below.</p>
+<p>The last constraint captures the notion of the customer-specific constraints mentioned above, where <span class="math inline">\(A\)</span> is assumed known (since its rows define some common purchase constraints) while the constraint bounds <span class="math inline">\(d_i\)</span> are not known.</p>
+<p>The above optimization problem with a linear objective and constraints is called a <em>Linear Program</em> for which there exist very efficient solvers. Look below for a basic implementation of a linear program in R.</p>
 <p>That is, if for any customer Alice knew the parameters of <em>their</em> optimization problem (<span class="math inline">\(v_i\)</span> up to a normalizing scalar, <span class="math inline">\(b_i\)</span> and <span class="math inline">\(d_i\)</span>) then predicting the purchase behavior is easy. It just involves solving the above problem for any price vector of interest <span class="math inline">\(p\)</span> to obtain a prediction of that customer’s purchase quantity vector <span class="math inline">\(x_i\)</span>. Note that, albeit esoteric, the optimizer defines a family of regression functions <span class="math inline">\(x_i = Opt(p_t; \theta)\)</span> parameterized by <span class="math inline">\(\theta \triangleq (v_i, b_i, d_i)\)</span>, in principle, no different from any other family.</p>
 <p>Therefore the problem of <em>learning</em> the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it is posed as <em>inverting</em> the optimization procedure, is studied under the heading <em>Inverse Optimization</em>.</p>
 <p>(The term engineers use for this <em>inverting</em> process, that is, estimating the parameters of a system from observations, is <em>System Identification</em>. Although many of the techniques that engineers use exploit some special structure of their systems, their <em>task</em> is exactly the same as Alice’s.)</p>
@@ -77,8 +78,8 @@ x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 <p>In fact, she reasons, that instead of taking the mean of the filtered parameter vectors, she could use them to estimate her uncertainty in the predictions from her regression function. For a price vector that she would like to plug into her regression function, she could run the <span class="math inline">\(Opt(.)\)</span> function over a sample of compatible parameter vectors and use the range of the predicted values as her measure of uncertainty.</p>
 <p>Although Alice is unware of it, she not only independently derived the fundaments of Bayesian reasoning from commonsense, but a particular <em>computational</em> approach to Bayesian estimation. An entire subfield of Bayesian statistics called <em>Approximate Bayesian Computation (ABC)</em> is dedicated to Alice’s sample-simulate-filter method, with the goal of making it computationally feasible. Note how the <em>ABC</em> approach can be applied to invert any parameterized simulator, at least in principle. This generality is paid for in computational costs.</p>
 <p><strong>A Quick Aside on Identifiability</strong>. <em>Identifiability</em> is a topic that statisticians like to obsess over in their work, resulting in a thicket of abstruse procedures for practitioners to follow to avoid a dull feeling of being insufficiently diligent.</p>
-<p>From a Bayesian vantage the commonsense way to think about identifiability is captured in a statement made above – <em>very</em> different parameter settings do not end up producing data close to the observations. In fact, it is even a bit milder than that. Loosely speaking, for the kinds of extrapolations we wish to perform with the learned model (i.e, simulator + compatible parameter vectors), if the predictions on any input from <em>most</em> of the compatible parameter vectors are <em>similar</em>, then for practical purposes the model is identified.</p>
-<p>Identifiability in a Bayesian setting is a function of the prior, the simulator, and the observed data. If we can disallow parts of the parameter space which end up being compatible with the data by some external considerations, or if we are able to collect more of the right kind of data, we can recover idenfitiability. If neither is possible, the only hope is to restrict the simulator by reparameterization and only gain partial knowledge about the system being studied.</p>
+<p>From a Bayesian vantage the commonsense way to think about identifiability is captured in a statement made above – <em>very</em> different parameter settings do not end up producing data close to the observations. That is, if vastly different (a priori likely) parameter values are compatible with the data then we say that the parameters of the model are non-identifiable. In fact, in practice it is even a bit milder than that. Loosely speaking, for the kinds of extrapolations we wish to perform with the learned model (i.e, simulator + compatible parameter vectors), if the predictions on <em>any</em> input from <em>most</em> of the compatible parameter vectors are <em>similar</em>, then for practical purposes the model is identified.</p>
+<p>Identifiability in a Bayesian setting is a function of the prior, the simulator, and the observed data. If we can disallow parts of the parameter space which end up being compatible with the data by some external considerations, or if we are able to collect more of the right kind of data, we can recover idenfitiability. If neither is possible, the only hope is to restrict the simulator by reparameterization and only gain partial knowledge about the system being studied, consequently allowing only a restricted type of extrapolation.</p>
 </div>
 <div id="saving-on-aws-costs" class="section level2">
 <h2>Saving on AWS Costs</h2>
@@ -89,34 +90,84 @@ x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 <p>It turns out that for the particular model that Alice constructed by representing the purchase quantities as solutions of linear programs, the parameters of the model can be estimated by exploiting optimality properties of linear programs.</p>
 <p>For simplicity let us assume that the measure of distance of the predictions from the simulator to the observed data is the sum of squared errors. We can now restate Alice’s parameter estimation problem as</p>
 <p><span class="math display">\[\begin{aligned}
-\hat{\theta}_i \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i) &amp;= \mbox{arg min}_\theta \;\sum_t{(x_{it} - q_{it})^2} \\
+\hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
 \mbox{subject to} &amp;\;\; x_{it} = Opt(p_t, \theta) 
 \end{aligned}
-\]</span> where <span class="math inline">\(p_t\)</span> is the price for week <span class="math inline">\(t\)</span> and <span class="math inline">\(q_{it}\)</span> is the quanty vector purchased by customer <span class="math inline">\(i\)</span> that week.</p>
-<p>Again, the above optimization problem is to minimize the squared error between the predictions <span class="math inline">\(x_{it}\)</span> of the simulator and the observed quantities <span class="math inline">\(q_{it}\)</span> over the parameter vector <span class="math inline">\(\theta_i\)</span>. The solution of this problem will yield the estimate the parameter vector for customer <span class="math inline">\(i\)</span>.</p>
-<p>(Like in the discussion above if we have prior knowledge about reasonable values for the parameters or on how the parameters vary between customers, we can use this knowledge by adding cost terms into the objective. Note that this way of adding cost terms into the objective to represent prior knowledge and then minimizing the overall cost for a point estimate of the parameters is called <em>Maximum A Posteriori</em> estimation in Bayesian lingo.)</p>
-<p>When we look at the optimization problem above, we notice that it is a <em>nested</em> optimization problem, because the <span class="math inline">\(Opt(.)\)</span> function is itself a linear program and is consequently a special case of what is called a <em>bilevel</em> optimization problem.</p>
+\]</span> where <span class="math inline">\(p_t\)</span> is the price for week <span class="math inline">\(t\)</span> and <span class="math inline">\(q_{it}\)</span> is the quanty vector purchased by customer <span class="math inline">\(i\)</span> that week. Note how even though we only care about an estimate for <span class="math inline">\(\theta\)</span> the optimization problem is over <span class="math inline">\(\theta\)</span> as well as <span class="math inline">\(x\)</span> (the vector of predictions of the quantities from the model).</p>
+<p>Again, the above optimization problem is to choose the parameter vector <span class="math inline">\(\theta_i\)</span> (and the predictions <span class="math inline">\(x\)</span> from that parameter vector) that minimize the squared error between the predictions <span class="math inline">\(x_{it}\)</span> of the simulator and the observed quantities <span class="math inline">\(q_{it}\)</span>. The solution of this problem will yield the estimate the parameter vector for customer <span class="math inline">\(i\)</span>.</p>
+<p>(Like in the discussion above if we have prior knowledge about reasonable values for the parameters or on how the parameters vary between customers, we can use this knowledge by adding cost terms into the objective. Note that this way of adding cost terms into the objective to represent prior knowledge and then minimizing the overall cost yielding a point estimate of the parameters is called <em>Maximum A Posteriori</em> estimation in Bayesian lingo.)</p>
+<p>We notice that the above inverse optimization problem has a <em>nested</em> structure. The <em>inner</em> constraints are based on the <span class="math inline">\(Opt(.)\)</span> which is a linear program, an optimization problem. The problem is consequently a special case of what is called a <em>bilevel</em> optimization problem. Bilevel optimization problems have the structure of an <em>outer</em> optimization problem subject to constraints dervied from an <em>inner</em> optimization problem. General bilevel optimization problems are difficult to solve but for certain special cases (which include Alice’s problem) they can be reformulated as <em>Mathematical Programs with Equilibrium Constraints (MPEC)</em>, where certain optimality conditions of the inner optimization problem are exploited to avoid the the inner optimization.</p>
+<p>Let us make all this a little clearer with Alice’s example. Again her <span class="math inline">\(Opt(.)\)</span> problem is written as <span class="math display">\[\begin{aligned}
+x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
+\mbox{subject to} &amp;\;\; \smash{p_t^T} x \leq b_{i} \\
+&amp;\; \; A x \leq d_i
+\end{aligned}
+\]</span></p>
+<p>For <span class="math inline">\(x_{it}\)</span> to be the optimal solution for the above problem it <em>must</em> necessarily satisfy the <em>Karush-Kuhn-Tucker (KKT)</em> conditions which for Alice’s problem state that there must exist a scalar <span class="math inline">\(\lambda\)</span> and a vector <span class="math inline">\(\mu\)</span> (which has as many entries as there are rows in <span class="math inline">\(A\)</span>) that together with <span class="math inline">\(x_{it}\)</span> satisfy the following constraints.</p>
+<p><span class="math display">\[\begin{aligned}
+v_i + \lambda\, p_i + A^T \mu &amp;= 0  \\
+\smash{p_t^T} x_{it} &amp;\leq b_{i} \\
+A x_{it} &amp;\leq d_i \\
+\lambda &amp;\geq 0 \\
+\mu &amp;\geq 0 \\
+\lambda (p_t^T x_{it} - b ) &amp;= 0 \\
+\mu^T (A x_{it} - d_i) &amp;= 0
+\end{aligned}
+\]</span></p>
+<p>The quantity <span class="math inline">\(\lambda\)</span> and the entries of <span class="math inline">\(\mu\)</span> are called the <em>Lagrange multipliers</em> in optimization theory, and there is one for every constraint in the problem. Note how the KKT constraints are all linear in <span class="math inline">\(x_{it}\)</span>, <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> except for the last two, which are called the <em>complementarity constraints</em>. They encode the notion that if at optimality a certain constraint is inactive (i.e., the constraint might as well have not been part of the original problem – it does not restrict the optimal solution), then the corresponding Lagrange multiplier has to be zero.</p>
+<p>The first condition is called the <em>stationarity</em> condition, the second and third are called <em>primal feasibility</em> conditions (these are just a copy of the constraints from the original problem), and the fourth and the fifth are called <em>dual feasibility</em> conditions (the Lagrange multipliers for inequality constraints cannot be negative).</p>
+<p>For a linear program the KKT conditions are not only necessary but sufficient for optimality. That is <em>if</em> we found a primal feasible <span class="math inline">\(x_{it}\)</span> and dual feasible <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> which also satisfy the stationarity and complementarity conditions, <em>then</em> <span class="math inline">\(x_{it}\)</span> is an optimal solution to the original optimization problem.</p>
+<p>We can use this fact to rewrite the bilevel optimization problem. That is we can translate the problem</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
+\mbox{subject to} &amp;\;\; x_{it} = Opt(p_t, \theta) 
+\end{aligned}
+\]</span> to an equivalent problem</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
+\mbox{subject to} &amp;\;\;  \\ 
+&amp; v_i + \lambda\, p_i + A^T \mu = 0  \\
+&amp; \smash{p_t^T} x_{it} \leq b_{i} \\
+&amp; A x_{it} \leq d_i \\
+&amp; \lambda \geq 0 \\
+&amp; \mu \geq 0 \\
+&amp; \lambda (p_t^T x_{it} - b ) = 0 \\
+&amp; \mu^T (A x_{it} - d_i) = 0
+\end{aligned}
+\]</span></p>
+<p>which is no longer a bilevel optimization problem, but because of the two complementarity constraints a mathematical program with equilibrium constraints (MPEC). Many techniques have been proposed to handle these constraints but conceptually the most straightfoward is to rewrite them using boolean variables, thereby converting the above problem into a <em>Mixed Integer Quadratic Program (MIQP)</em>.</p>
+</div>
+<div id="discussion" class="section level2">
+<h2>Discussion</h2>
 </div>
 <div id="appendix" class="section level2">
 <h2>Appendix:</h2>
-<p>Example R code on which to base Alice’s <span class="math inline">\(Opt(.)\)</span> function.</p>
+<p>Example R code for Alice’s <span class="math inline">\(Opt(.)\)</span> function.</p>
 <pre class="r"><code>library(CVXR)
 
-x &lt;- Variable(2) #only two products 
-v &lt;- c(0.1, 0.9) #value vector
-value &lt;- sum(v * x) #total value that the customer optimizes
+Opt &lt;- function(p,                  #input price vector
+                v = c(0.1, 0.9),    #value vector
+                b = 10,             #budget
+                d = c(2, 1))        #rhs of constraints
+{
+  x &lt;- Variable(2)                    #only two products 
+  value &lt;- sum(v * x)                 #total value that the customer optimizes
+  
+  constr_budget &lt;- sum(p * x) &lt;= 10   #budget no more than $10
+  
+  A &lt;- rbind(c(1, 1), c(0, 1))        #&quot;other&quot; constraint matrix
+  
+  constr_other &lt;- A %*% x &lt;= d        #other constraints
+  
+  #solve for value maximization
+  solution &lt;- solve(Problem(Maximize(value), list(constr_budget, constr_other))) 
+  return(list(status = solution$status, quantities = solution$getValue(x)))
+}
 
-p &lt;- c(3, 2)  #prices of the two products
-constr_budget &lt;- sum(p * x) &lt;= 10 #budget no more than $10
+sol = Opt(p = c(3, 2))               #predict quantities of the two products
 
-A &lt;- rbind(c(1, 0), c(0, 1))
-b &lt;- c(2, 4)
-constr_other &lt;- A %*% x &lt;= b #other constraints
-
-solution &lt;- solve(Problem(Maximize(value), list(constr_budget, constr_other))) #solve for value maximization
-
-cat(paste0(&#39;Status: &#39;, solution$status))
+cat(paste0(&#39;Status: &#39;, sol$status))
 ## Status: optimal
-cat(paste0(round(solution$getValue(x), 2))) #print optimal quantity vector
-## 0.67 4</code></pre>
+cat(paste0(round(sol$quantities, 2))) #print optimal quantity vector
+## 1 1</code></pre>
 </div>
