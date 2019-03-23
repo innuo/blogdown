@@ -31,4 +31,4 @@ footnotereturnlinkcontents = "↩"
 
 [params]
     description = "A website built through Hugo and blogdown."
-    footer = "&copy; Harsha Veeramachaneni 2019 [blogdown](https://github.com/rstudio/blogdown) & [Hugo](https://gohugo.io/)"
+    footer = "&copy; Harsha Veeramachaneni 2019. Made using  [blogdown](https://github.com/rstudio/blogdown) & [Hugo](https://gohugo.io/)"

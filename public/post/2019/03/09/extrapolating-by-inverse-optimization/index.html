@@ -35,7 +35,7 @@
 
 
 
-<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization, and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.</em></p>
+<p><em>Wherein I present a simple example of a prediction problem modeled as inverse optimization and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.</em></p>
 <p>Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove.</p>
 <p>The collected data looks something like the following. (In each row the prices and quantities are for <em>all</em> the products Alice sells.)</p>
 <table>
@@ -157,7 +157,7 @@ A x_{it} &amp;\leq d_i \\
 &amp; \mu^T (A x_{it} - d_i) = 0
 \end{aligned}
 \]</span></p>
-<p>which is no longer a bilevel optimization problem, but because of the two complementarity constraints a mathematical program with equilibrium constraints (MPEC). Many techniques have been proposed to handle these constraints but conceptually the most straightfoward is to rewrite them using boolean variables, thereby converting the above problem into a <em>Mixed Integer Quadratic Program (MIQP)</em>.</p>
+<p>which is no longer a bilevel optimization problem, but, because of the two complementarity constraints, a mathematical program with equilibrium constraints (MPEC). Many techniques have been proposed to handle these constraints but conceptually the most straightfoward is to rewrite them using boolean variables, thereby converting the above problem into a <em>Mixed Integer Quadratic Program (MIQP)</em>.</p>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
@@ -175,7 +175,7 @@ Opt &lt;- function(p,                  #input price vector
   x &lt;- Variable(2)                    #only two products 
   value &lt;- sum(v * x)                 #total value that the customer optimizes
   
-  constr_budget &lt;- sum(p * x) &lt;= 10   #budget no more than $10
+  constr_budget &lt;- sum(p * x) &lt;= b    #total cost no more than budget
   
   A &lt;- rbind(c(1, 1), c(0, 1))        #&quot;other&quot; constraint matrix
   
@@ -210,7 +210,7 @@ cat(paste0(round(sol$quantities, 2))) #print optimal quantity vector
 
   
   <hr/>
-  &copy; Harsha Veeramachaneni 2019 <a href="https://github.com/rstudio/blogdown">blogdown</a> &amp; <a href="https://gohugo.io/">Hugo</a>
+  &copy; Harsha Veeramachaneni 2019. Made using  <a href="https://github.com/rstudio/blogdown">blogdown</a> &amp; <a href="https://gohugo.io/">Hugo</a>
   
   </footer>
   </body>

@@ -10,7 +10,7 @@ tags:
   - Approximate Bayesian Computation
   - Bilevel Optimization
 ---
-*Wherein I present a simple example of a prediction problem modeled as inverse optimization, and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.* 
+*Wherein I present a simple example of a prediction problem modeled as inverse optimization and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.* 
 
 
 Our story begins with Alice who runs a grocery store with a small selection of locally grown produce.  Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
@@ -140,7 +140,7 @@ $$\begin{aligned}
 \end{aligned}
 $$
 
-which is no longer a bilevel optimization problem, but because of the two complementarity constraints a mathematical program with equilibrium constraints (MPEC). Many techniques have been proposed to handle these constraints but conceptually the most straightfoward is to rewrite them using boolean variables, thereby converting the above problem into a _Mixed Integer Quadratic Program (MIQP)_.
+which is no longer a bilevel optimization problem, but, because of the two complementarity constraints, a mathematical program with equilibrium constraints (MPEC). Many techniques have been proposed to handle these constraints but conceptually the most straightfoward is to rewrite them using boolean variables, thereby converting the above problem into a _Mixed Integer Quadratic Program (MIQP)_.
 
 Discussion
 ----------
@@ -162,7 +162,7 @@ Opt <- function(p,                  #input price vector
   x <- Variable(2)                    #only two products 
   value <- sum(v * x)                 #total value that the customer optimizes
   
-  constr_budget <- sum(p * x) <= 10   #budget no more than $10
+  constr_budget <- sum(p * x) <= b    #total cost no more than budget
   
   A <- rbind(c(1, 1), c(0, 1))        #"other" constraint matrix
   
