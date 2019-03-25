@@ -13,7 +13,7 @@ tags:
 *Wherein I present a simple example of a prediction problem modeled as inverse optimization and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.* 
 
 
-Our story begins with Alice who runs a grocery store with a small selection of locally grown produce.  Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend (because who doesn't have one these days) she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
+Our story begins with Alice who runs a grocery store with a small selection of locally grown produce.  Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help. After consulting with her data scientist friend she puts together a database of quantities of produce purchased by individual customers under various pricing regimes, and hands him the trove. 
 
 The collected data looks something like the following. (In each row the prices and quantities are for _all_ the products Alice sells.)
 
@@ -148,7 +148,7 @@ Discussion
 ----------
 Assume that Alice was successful in accurately estimating the parameters of her model $Opt(.)$ and now wants to maximize her own profit by adjusting her price vector $p$. One should be able to convince oneself that this problem is also a bilevel optimization problem. In fact, the interaction of her prices and the customer purchase behavior is an instance of a _Stackleberg game_ that models economic scenarios with a leader-follower dynamic. Bilevel optimization problems pop up in the study of equilibria in Stackleberg games, and have many other economic applications. While the price of fruit is important in its own right, my own interest in this topic is due to its applicability to the design of optimal energy portfolios.
 
-Before I conclude, I want to discuss the connection between Inverse Optimization and _Inverse Reinforcement Learning (IRL)_, which at least nominally seem like they ought to be related. IRL deals with the estimation of the reward function that an agent is optimizing by observing its behavior in an environment. This can be useful, for example, when we want to train a robot to imitate a human whose behavior we can observe but not the reward function she is optimizing. 
+Before I conclude, I want to discuss the connection between Inverse Optimization and _Inverse Reinforcement Learning (IRL)_, which at least superficially seem like they ought to be related. IRL deals with the estimation of the reward function that an agent is optimizing by observing its behavior in an environment. This can be useful, for example, when we want to train a robot to imitate a human whose behavior we can observe but not the reward function she is optimizing. 
 
 To formulate Alice's problem as IRL, we model her customers as agents who find themselves in a _state_ which is the price regime set by Alice, and take an _action_ which is the quanities they purchase. In order to train RL agents that behave like the customers, we would need the reward function that maps a state and action to a reward value, i.e., a function that maps a price and quantity vector to a reward. The reward function for the $i^{th}$ customer in Alice's model be written as (where $s$ is the state and $a$ is the action)
 
@@ -161,7 +161,7 @@ r(s, a) &= \left\{
                 \end{array}
               \right.
 \end{aligned}
-IRL attempts to learn this reward function from the historical data, which can then be used in a reinforcement learning setting to construct a simulator for customer behavior -- essentially to reverse engineer the $Opt(.)$ function from data. In other words, the IRL way of solving Alice's problem lies somewhere in between the regression approach and inverse optimization approach, by making stronger assumptions than the former and weaker assumptions than the latter.
+IRL attempts to approximate this reward function (without assuming the functional form above) from  historical data (that is, the recorded behavior of customers), which can then be used to reinforcement learn a simulator for customer behavior -- essentially to reverse engineer the $Opt(.)$ function from data. In other words, the IRL way of solving Alice's problem lies somewhere in between the regression approach and inverse optimization approach, by assuming a bit more than the former and a bit less than the latter.
 
 
 Miscellany
