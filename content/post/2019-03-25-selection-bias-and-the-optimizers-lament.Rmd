@@ -1,0 +1,13 @@
+---
+title: Selection Bias and the Optimizer's Lament
+author: ''
+date: '2019-03-25'
+slug: selection-bias-and-the-optimizers-lament
+categories:
+  - Optimization
+tags:
+  - Selection bias
+---
+
+_Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than one expected._
+

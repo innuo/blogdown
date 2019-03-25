@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Selection Bias and the Optimizer&#39;s Lament</title>
+      <link>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</guid>
+      <description>Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than one expected.</description>
+    </item>
     
     <item>
       <title>Extrapolating by Inverse Optimization</title>

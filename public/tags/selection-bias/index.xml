@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Selection bias on Notes To An Earlier Self</title>
+    <link>/tags/selection-bias/</link>
+    <description>Recent content in Selection bias on Notes To An Earlier Self</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/selection-bias/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Selection Bias and the Optimizer&#39;s Lament</title>
+      <link>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</guid>
+      <description>Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than one expected.</description>
+    </item>
+    
+  </channel>
+</rss>
