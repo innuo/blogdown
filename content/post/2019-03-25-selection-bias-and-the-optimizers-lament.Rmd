@@ -1,5 +1,5 @@
 ---
-title: Selection Bias and the Optimizer's Lament
+title: Selection Bias and the Disappointed Optimizer
 author: ''
 date: '2019-03-25'
 slug: selection-bias-and-the-optimizers-lament
@@ -9,5 +9,14 @@ tags:
   - Selection bias
 ---
 
-_Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than one expected._
+_Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected._
+
+Have you noticed that the checkout lane you chose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as the first ones? If you have, and are blaming this on the universe conspiring against you, you're absolutely right. I regret to inform you that indeed the fundamental laws of probability are arrayed against you. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of zen Buddhism or on your impeccably precise judgment of things.
+
+Imagine that you are seleting from two options, 1 and 2. Let their actual values to you be $v_1$ and $v_2$.  If $v_1$ and $v_2$ are known to you, then you choose option 1 if $v_1$ is greater than $v_2$ and 2 otherwise. 
+
+Instead assume that you only have an _estimate_ of the true values. For this example let's assume that the estimates are normally distributed around the true values with zero bias. That is, the estimates neither overestimate nor underestimate the true values on average.  
+
+In other words $X_1$ and $X_2$ be two normally distributed random variables with means 
+
 
