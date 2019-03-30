@@ -146,7 +146,7 @@ which is no longer a bilevel optimization problem, but, because of the two compl
 
 Discussion
 ----------
-Assume that Alice was successful in accurately estimating the parameters of her model $Opt(.)$ and now wants to maximize her own profit by adjusting her price vector $p$. One should be able to convince oneself that this problem is also a bilevel optimization problem. In fact, the interaction of her prices and the customer purchase behavior is an instance of a _Stackleberg game_ that models economic scenarios with a leader-follower dynamic. Bilevel optimization problems pop up in the study of equilibria in Stackleberg games, and have many other economic applications. While the price of fruit is important in its own right, my own interest in this topic is due to its applicability to the design of optimal energy portfolios.
+Assume that Alice was successful in accurately estimating the parameters of her model $Opt(.)$ and now wants to maximize her own profit by adjusting her price vector $p$. One should be able to convince oneself that this problem is also a bilevel optimization problem. In fact, the interaction of her prices and the customer purchase behavior is an instance of a _Stackleberg game_ that models economic scenarios with such a leader-follower dynamic. Bilevel optimization problems pop up in the study of equilibria in Stackleberg games, and have many other economic applications. While the price of fruit is important in its own right, my own interest in this topic is due to its applicability to designing optimal energy portfolios.
 
 Before I conclude, I want to discuss the connection between Inverse Optimization and _Inverse Reinforcement Learning (IRL)_, which at least superficially seem like they ought to be related. IRL deals with the estimation of the reward function that an agent is optimizing by observing its behavior in an environment. This can be useful, for example, when we want to train a robot to imitate a human whose behavior we can observe but not the reward function she is optimizing. 
 
@@ -195,7 +195,7 @@ cat(paste0('Status: ', sol$status))
 cat(paste0(round(sol$quantities, 2))) #print optimal quantity vector
 ```
 
-**Mixed-integer formulation of OR constraints (so-called "disjunctions")**.
+**A mixed-integer formulation for OR constraints (so-called "disjunctions")**.
 Complementarity constraints restrict a variable to be zero whenever another is non-zero. More generally in a optimization problem over a vector $x$, we might want to add the constraint that  at least one of the two  linear functions $f(x)$ and $g(x)$ must be zero. That is, either $f(x) =0$ or $g(x) =0$, written as $f(x) g(x) = 0$ (a so-called _bilinear_ constraint).
 
 This non-linear constraint can be "linearized" by adding another variable $z$ to the optimization problem and replacing the bilinear constraint with the following constraints 
