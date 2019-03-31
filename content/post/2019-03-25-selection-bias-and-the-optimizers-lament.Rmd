@@ -11,9 +11,9 @@ tags:
 
 _Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in two excellent articles, [The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis](https://pdfs.semanticscholar.org/ce61/396a4abe1da265f4b5d3f05d11fd206c40f7.pdf) by Smith and Winkler and [Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average](https://arxiv.org/pdf/1302.7175.pdf) by van Hasselt._
 
-Have you noticed that the checkout lanes you choose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts? If you have, and suspect that the universe is conspiring against you, let me assure you that your suspicions are well founded. The fundamental laws of probability have indeed been arrayed to scupper your satisfaction. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of Zen Buddhism or on your finely tuned skepticism about things.
+Have you noticed that the checkout lanes you choose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts? If you have, and suspect that the universe is conspiring against you, let me assure you that your suspicions are well-founded. The fundamental laws of probability have indeed been arrayed to scupper your satisfaction. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of Zen Buddhism or on your finely tuned skepticism about things.
 
-The mechanism that may explain this seeming conspiracy, phenomena as diverse as the the replication crisis in social sciences and the oil wells producing below expectations, and also superstitions like the Sports Illustrated cover jinx is what Smith and Winker call _Postdecision Surprise_. Let's look a bit closer at the mechanism (using notation slightly different from Smith and Winkler).
+The mechanism that may explain this seeming conspiracy, phenomena as diverse as the the replication crisis in social sciences and oil wells producing below expectations, and also superstitions like the Sports Illustrated cover jinx is what Smith and Winker call _Optimizer's Curse_. Let's look a bit closer at the mechanism (using notation slightly different from Smith and Winkler).
 
 Imagine that you are selecting from $n$ options, $1, \ldots, n$. Let the _true_ values of these $n$ options to you be as the vector $\mu = (\mu_1, \ldots, \mu_n)$.  If these true values were known to you, then you would choose option $m$ where $m = \mbox{argmax}_i\, \mu_i$. 
 
@@ -25,10 +25,33 @@ The first inequality is because $v_k \geq v_m$ (that's why you chose option $k$)
 
 Now taking expectations with respect to $V$ we have
 $$ E[\mu_k - v_k ] \leq E[\mu_m - v_m] = 0$$
-The equality of the second term to zero is due to our assumption that the estimates are all (and in particular the $m^{th}$ one is) unbiased. The expected surprise is therefore non-positive. In fact, it is zero only when the probability $P(k = m) = 1$. That is, if there is a chance that we make a wrong choice based on our estimates then the our suprises are on average unpleasant. 
+The equality of the second term to zero is due to our assumption that the estimates are all (and in particular the $m^{th}$ one is) unbiased. The expected surprise is therefore non-positive. In fact, it is zero only when the probability $P(k = m) = 1$. That is, if there is a chance that you can make a wrong choice based on the estimates, then your suprises are on average unpleasant. 
 
+Disappointment Mitigation
+-------------------
+If we knew that the true values are being generated from a _known_ distribution $P(\mu)$, the bias can be just _completely_ eliminated by turning the Bayesian crank. 
 
+In this case the _generative model_ for our problem can be written as (read $\sim$ "is distributed as")
+$$\begin{aligned}
+\mu &\sim P(\mu)\\
+v_i &\sim P(.| \mu_i)
+\end{aligned}
+$$
 
+The procedure to follow under this model is to first estimate the posterior means $E[\mu|V] \triangleq (\hat{\mu}_1, \ldots, \hat{\mu}_n)$ and then select the "best" option based on the posterior means, $k = \mbox{argmax}_i\, \hat{\mu}_i = \mbox{argmax}_i\, E[\mu_i|V]$. 
+
+What is the expected surprise under this model? To make things clear I will make it explicit as to what variables the expectations are over.
+
+$$\begin{aligned}
+E[\mu_k - \hat{\mu}_k] &\triangleq E_{\mu, V}[\mu_k - \hat{\mu}_k] \\
+&= E_V[E_\mu[\mu_k - \hat{\mu}_k|V]]  \\
+&= E_V[E_\mu[\mu_k|V] - \hat{\mu}_k] \\
+&= E_V[\hat{\mu}_k  - \hat{\mu}_k] = 0
+\end{aligned}$$ 
+
+The first line is just the definition of what we mean by average surprise. The second line uses the law of total expectation. The third line uses the fact that since $\hat{\mu}_k$ is a function of $V$, it is a constant when $V$ is fixed. The last line is from the definition of the posterior estimate $\hat{\mu}_k$. 
+
+**Caveat Lector**: 
 
 
 
