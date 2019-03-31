@@ -29,7 +29,7 @@ The equality of the second term to zero is due to our assumption that the estima
 
 Disappointment Mitigation
 -------------------
-If we knew that the true values are being generated from a _known_ distribution $P(\mu)$, the bias can be just _completely_ eliminated by turning the Bayesian crank. 
+If you knew that the true values are being generated from a _known_ distribution $P(\mu)$, the bias can be _completely_ eliminated by turning the Bayesian crank. 
 
 In this case the _generative model_ for our problem can be written as (read $\sim$ "is distributed as")
 $$\begin{aligned}
@@ -51,7 +51,17 @@ E[\mu_k - \hat{\mu}_k] &\triangleq E_{\mu, V}[\mu_k - \hat{\mu}_k] \\
 
 The first line is just the definition of what we mean by average surprise. The second line uses the law of total expectation. The third line uses the fact that since $\hat{\mu}_k$ is a function of $V$, it is a constant when $V$ is fixed. The last line is from the definition of the posterior estimate $\hat{\mu}_k$. 
 
-**Caveat Lector**: 
+Therefore, if you use the posterior estimates of as your expectations of your future value and to select among your options, then your average surprise is zero. The Bayesian posterior expectation _shrinks_ the esimates $v_i$ towards the prior mean of $\mu_i$ which is what makes the procedure unbiased.
+
+Depending of the distribution $P(V|\mu)$ the option that is selected by the Bayesian procedure (i.e., optimizing over $\hat{\mu}$) can be different from the one by optimizing over $V$. For example, if we knew that the estimate with the largest maginitude, say $v_j$, is very noisy, option $j$ may no longer be selected after the shrinkage due to the posterior expectation. An option with a smaller but more accurate estimate may win out. Therefore, you not only have unbiased estimates of the value of the decisions you make, but you also __make better decisions__. 
+(It can be shown that the Bayesian procedure is guaranteed to produce decisions with greater value on average than maximizing over the estimates, unless the two procedures produce identical decisions everytime.)
+
+**Caveat Lector**. There is a subtle sleight-of-hand in the proof of unbiasedness of the Bayesian procedure above. On the fourth line of the proof we said $E_\mu[\mu_k|V] = \hat{\mu}_k$. Note that this expectation with respect to $\mu$ is being conducted _by the universe_, whereas the expectation in $\hat{\mu}_i = E[\mu_i|V]$ to obtain the estimate was conducted _by you_. Therefore, as a quick simulation will verify, if your notion of the prior distribution on $\mu$ differs from the universe's, the guarantee of unbiasedness does not hold. Generally our belief about $\mu$ will flatter and wider (indicating our ignorance) than the true prior. In this case the optimizer's bias is not completely eliminated even with the Bayesian procedure. In this case one could apply Smith and Winkler's recommendation of a hierarchical prior, which results in the posterior estimates that shrink towards a weighted average of a global mean and the mean of the estimates $\bar{v} = \frac{1}{n}\sum_iv_i$.
+
+
+
+
+
 
 
 
