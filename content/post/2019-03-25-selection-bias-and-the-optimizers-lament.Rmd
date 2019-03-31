@@ -9,14 +9,26 @@ tags:
   - Selection bias
 ---
 
-_Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected._
+_Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in two excellent articles, [The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis](https://pdfs.semanticscholar.org/ce61/396a4abe1da265f4b5d3f05d11fd206c40f7.pdf) by Smith and Winkler and [Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average](https://arxiv.org/pdf/1302.7175.pdf) by van Hasselt._
 
-Have you noticed that the checkout lane you chose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as the first ones? If you have, and are blaming this on the universe conspiring against you, you're absolutely right. I regret to inform you that indeed the fundamental laws of probability are arrayed against you. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of zen Buddhism or on your impeccably precise judgment of things.
+Have you noticed that the checkout lanes you choose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts? If you have, and suspect that the universe is conspiring against you, let me assure you that your suspicions are well founded. The fundamental laws of probability have indeed been arrayed to scupper your satisfaction. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of Zen Buddhism or on your finely tuned skepticism about things.
 
-Imagine that you are seleting from two options, 1 and 2. Let their actual values to you be $v_1$ and $v_2$.  If $v_1$ and $v_2$ are known to you, then you choose option 1 if $v_1$ is greater than $v_2$ and 2 otherwise. 
+The mechanism that may explain this seeming conspiracy, phenomena as diverse as the the replication crisis in social sciences and the oil wells producing below expectations, and also superstitions like the Sports Illustrated cover jinx is what Smith and Winker call _Postdecision Surprise_. Let's look a bit closer at the mechanism (using notation slightly different from Smith and Winkler).
 
-Instead assume that you only have an _estimate_ of the true values. For this example let's assume that the estimates are normally distributed around the true values with zero bias. That is, the estimates neither overestimate nor underestimate the true values on average.  
+Imagine that you are selecting from $n$ options, $1, \ldots, n$. Let the _true_ values of these $n$ options to you be as the vector $\mu = (\mu_1, \ldots, \mu_n)$.  If these true values were known to you, then you would choose option $m$ where $m = \mbox{argmax}_i\, \mu_i$. 
 
-In other words $X_1$ and $X_2$ be two normally distributed random variables with means 
+Instead assume that you only have _estimates_ ($V = (v_1, \ldots, v_n)$) of the true values. Further assume that the estimates are _unbiased_. That is, on average each $v_i$ neither overestimates nor underestimates its corresponding true value $\mu_i$. An obvious strategy now is for you choose to go with option $k = \mbox{argmax}_i\, v_i$. That is, you select the option that has the largest estimate of value. After the choice is made, the true value $\mu_k$ is revealed to you. We want to know what the _surprise_ $\mu_k - v_k$ is, on average.
+
+We have
+$$\mu_k - v_k \leq \mu_k - v_m \leq \mu_m - v_m$$
+The first inequality is because $v_k \geq v_m$ (that's why you chose option $k$) and the second inequality is because $\mu_m \geq \mu_k$ because $m^{th}$ option is the best (unbeknowst to you.)
+
+Now taking expectations with respect to $V$ we have
+$$ E[\mu_k - v_k ] \leq E[\mu_m - v_m] = 0$$
+The equality of the second term to zero is due to our assumption that the estimates are all (and in particular the $m^{th}$ one is) unbiased. The expected surprise is therefore non-positive. In fact, it is zero only when the probability $P(k = m) = 1$. That is, if there is a chance that we make a wrong choice based on our estimates then the our suprises are on average unpleasant. 
+
+
+
+
 
 

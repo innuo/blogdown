@@ -17,8 +17,7 @@
       <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</guid>
-      <description>Wherein I introduce and explain the mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected.
-Have you noticed that the checkout lane you chose at the grocery store tends to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as the first ones? If you have, and are blaming this on the universe conspiring against you, you’re absolutely right.</description>
+      <description>Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in two excellent articles, The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis by Smith and Winkler and Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average by van Hasselt.</description>
     </item>
     
     <item>
