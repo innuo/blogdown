@@ -210,3 +210,11 @@ $$
 where $M$ is some large positive number. When the binary variable $z$ takes the value $0$ the constraints restrict $f(x)$ to be identically zero and leave $g(x)$ unconstrained. When it takes the value of $1$ the reverse becomes true. 
 
 This trick for converting disjunctive constraints (unions of sets) into intersections is called the _big-M reformulation_. 
+
+References
+---------
+1. Andrew Gelman, [How to think about “identifiability” in Bayesian inference?](https://statmodeling.stat.columbia.edu/2014/02/12/think-identifiability-bayesian-inference/)
+2. Ahuja and Orling, [Inverse Optimization, Part 1:
+Linear Programming and General Problem](https://dspace.mit.edu/bitstream/handle/1721.1/2696/SWP-4002-40939332.pdf;sequence=1). This paper talks about finding the cost vector $v$ of a linear programming problem given the solution. Under their particular formulation this inverse problem itself turns out be a linear program.
+3. Dong and Chen, [Generalized Inverse Optimization through Online
+Learning](https://papers.nips.cc/paper/7294-generalized-inverse-optimization-through-online-learning.pdf). This paper presents an algorithm to perform online updates to track changing parameters of an optimization problem when observations of inputs and decisions are revealed one at a time. 

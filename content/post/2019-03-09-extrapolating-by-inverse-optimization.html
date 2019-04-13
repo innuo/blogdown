@@ -194,3 +194,11 @@ z &amp;\in \{0, 1\}
 <p>where <span class="math inline">\(M\)</span> is some large positive number. When the binary variable <span class="math inline">\(z\)</span> takes the value <span class="math inline">\(0\)</span> the constraints restrict <span class="math inline">\(f(x)\)</span> to be identically zero and leave <span class="math inline">\(g(x)\)</span> unconstrained. When it takes the value of <span class="math inline">\(1\)</span> the reverse becomes true.</p>
 <p>This trick for converting disjunctive constraints (unions of sets) into intersections is called the <em>big-M reformulation</em>.</p>
 </div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ol style="list-style-type: decimal">
+<li>Andrew Gelman, <a href="https://statmodeling.stat.columbia.edu/2014/02/12/think-identifiability-bayesian-inference/">How to think about “identifiability” in Bayesian inference?</a></li>
+<li>Ahuja and Orling, <a href="https://dspace.mit.edu/bitstream/handle/1721.1/2696/SWP-4002-40939332.pdf;sequence=1">Inverse Optimization, Part 1: Linear Programming and General Problem</a>. This paper talks about finding the cost vector <span class="math inline">\(v\)</span> of a linear programming problem given the solution. Under their particular formulation this inverse problem itself turns out be a linear program.</li>
+<li>Dong and Chen, <a href="https://papers.nips.cc/paper/7294-generalized-inverse-optimization-through-online-learning.pdf">Generalized Inverse Optimization through Online Learning</a>. This paper presents an algorithm to perform online updates to track changing parameters of an optimization problem when observations of inputs and decisions are revealed one at a time.</li>
+</ol>
+</div>
