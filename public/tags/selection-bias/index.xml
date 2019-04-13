@@ -12,12 +12,13 @@
     
     
     <item>
-      <title>Selection Bias and the Disappointed Optimizer</title>
-      <link>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</link>
+      <title>Crossvalidation and the Disappointed Optimizer</title>
+      <link>/post/2019/03/25/crossvalidation-and-the-disappointed-optimizer/</link>
       <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/2019/03/25/selection-bias-and-the-optimizers-lament/</guid>
-      <description>Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in two excellent articles, The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis by Smith and Winkler and Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average by van Hasselt.</description>
+      <guid>/post/2019/03/25/crossvalidation-and-the-disappointed-optimizer/</guid>
+      <description>Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in the excellent article, The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis by Smith and Winkler.
+Have you noticed that the checkout lanes you choose at the grocery store tend to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts?</description>
     </item>
     
   </channel>

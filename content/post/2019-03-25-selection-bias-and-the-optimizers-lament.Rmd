@@ -1,8 +1,8 @@
 ---
-title: Selection Bias and the Disappointed Optimizer
+title: Crossvalidation and the Disappointed Optimizer
 author: ''
 date: '2019-03-25'
-slug: selection-bias-and-the-optimizers-lament
+slug: crossvalidation-and-the-disappointed-optimizer
 categories:
   - Optimization
 tags:
@@ -11,9 +11,9 @@ tags:
   - Postdecision suprise
 ---
 
-_Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in two excellent articles, [The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis](https://pdfs.semanticscholar.org/ce61/396a4abe1da265f4b5d3f05d11fd206c40f7.pdf) by Smith and Winkler and [Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average](https://arxiv.org/pdf/1302.7175.pdf) by van Hasselt._
+_Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in the excellent article, [The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis](https://pdfs.semanticscholar.org/ce61/396a4abe1da265f4b5d3f05d11fd206c40f7.pdf) by Smith and Winkler._ 
 
-Have you noticed that the checkout lanes you choose at the grocery store tend to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts? If you have, and suspect that the universe is conspiring against you, let me assure you that your suspicions are well-founded. The fundamental laws of probability have indeed been arrayed to scupper your satisfaction. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of Zen Buddhism or on your finely tuned skepticism about things.
+Have you noticed that the checkout lanes you choose at the grocery store tend to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts? If you have, and suspect that the universe is conspiring against you, let me assure you that your suspicions are well-founded. Indeed the fundamental laws of probability have carefully been arrayed to scupper your satisfaction. If you haven't noticed any such conspiracy, I congratulate you on either your consistent practice of Zen Buddhism or on your finely tuned skepticism about things.
 
 The mechanism that may explain this seeming conspiracy, phenomena as diverse as the the replication crisis in social sciences and oil wells producing below expectations, and also superstitions like the Sports Illustrated cover jinx is what Smith and Winker call the _Optimizer's Curse_. Let's look a bit closer at the mechanism (using notation slightly different from Smith and Winkler).
 
@@ -61,14 +61,40 @@ We know that the Bayesian procedure is unbiased, but does it produce better deci
 $$ E_{\mu, V}[\mu_k] - E_{\mu, V}[\mu_j] = E_V[E_\mu[\mu_k|V]] - E_V[E_\mu[\mu_j|V]] = E_V[\hat{\mu}_k - \hat{\mu}_j] \geq 0$$
 The first equality uses the same trick of the law of total expectation, the second equality is from the definition of $\hat{\mu}$ and the inequality is because $k$ is the index which maximizes the posterior mean. Therefore, unless the two procedures _always_ produce the same decisions, on average the Bayesian procedure yields greater value. 
 
-**A Subtelty**. When I first read the proof of unbiasedness of the Bayesian procedure I was puzzled by it because under a sufficiently flat prior the Bayesian decision procedure can be arbitrarily closely approximated by maximizing over the estimates $v_i$. So how can the former procedure be unbiased when the latter is not? 
+**A Subtelty**. When I first read the proof of unbiasedness of the Bayesian procedure I was puzzled by it because under a sufficiently flat prior the Bayesian decision procedure arbitrarily closely approximates maximizing over the estimates $v_i$. So how can the former procedure be unbiased when the latter is not? 
 
 I realized that there is a subtle sleight-of-hand in the proof. Note that the fourth line of the proof of unbiasedness of the Bayesian procedure uses the fact that $E_\mu[\mu_k|V] = \hat{\mu}_k$. This expectation with respect to $\mu$ is being conducted _by the universe after the decision_ , whereas the expectation in $\hat{\mu}_i = E[\mu_i|V]$ to obtain the estimates was conducted _by you to make the decision_. Therefore, as a quick simulation will verify, if your notion of the prior distribution on $\mu$ differs from the universe's, the guarantee of unbiasedness does not hold. Generally since our belief about $\mu$ will flatter and wider (indicating our ignorance) than the true prior, the optimizer's bias is not completely eliminated even with the Bayesian procedure. In this case one could apply Smith and Winkler's recommendation of a hierarchical prior, which results in the posterior estimates that shrink towards a weighted average of a global prior mean of the values, and the mean of the estimates $\bar{v} = \frac{1}{n}\sum_i v_i$.
 
 
-Crossvalidation 
+Train-Test Split and Crossvalidation
+------------------------------------
 
+Let us change the setup a bit and postulate that instead of one estimate for each option, we have two independent estimates. That is, for each option $i$ we have two _unbiased_ estimates $v_i^A$ and $v_i^B$ which, conditioned on the true value $\mu_i$, are independent. What would be the bias of our estimates if we optimize using the first set of estimates $v_i^A$, but estimate the future values from the second set of estimates $v_i^B$? That is, first select the option $k = \mbox{argmax}_i\, v_i^A$, but _expect_ that the value of option $k$ is $v_k^B$. The expected surprise is given by
 
+$$\begin{align}
+E[\mu_k - v_k^B] &= \sum_{i=1}^n E[\mu_k - v_k^B|k = i] P(k=i) \\
+&= \sum_{i=1}^n E[\mu_i - v_i^B|v_i^A > v_{j \neq i}^A] P(v_i^A > v_{j \neq i}^A ) \\
+&= \sum_{i=1}^n E[\mu_i - v_i^B] P(v_i^A > v_{j \neq i}^A )  = 0\\
+\end{align}
+$$
+The first equality is from the law of total expectation, the second uses the definition of $k = i$, the third uses the independence of the $A$ and $B$ estimates and the assumption that all the $B$ estimates are unbiased. 
 
+Since we are using only _part_ of the information we have for the decision making and the remaining part for estimating the future value of the decision there is a natural trade-off: we can use the estimate with the smaller variance  (between $A$ and $B$) to make the decision and the other for value estimation, or vice versa. We are choosing between making worse decisions or making worse (but still unbiased) estimates of the future values from those decisions. 
 
+We can now relate this whole discussion to how we train machine learning models. Postdecision surprise is hardly a foreign concept to data scientists who regularly select the "best" among competing models to release into the wild, based on some estimate of their accuracy on a training dataset.
 
+The above discussion implies that if we perform a train-test split of our data, train and select between the models based solely on the train-set and use the test-set only to evaluate the performance of the selected model, then we can be confident that on average the real-world performance will not disappoint (as long as the performance evaluation on the test-set is unbiased). Just to be clear, this guarantee of unbiasedness is over the real-world performance of all such models trained and evaluated in this way. 
+
+So the procedure to train and evaluate machine learning models ought to be to split the data into two sets perform model selection on one and model evaluation on the other _after the selection is done_. The model selection on the train-set can use whatever crossvalidation procedure that maximizes the probability of picking the best model, but must use no information from the test-set. 
+
+However, the temptation of using  information from the test-set to select between models is too much even for the most conscientious data scientist. In fact, the most common procedure is to perform crossvalidation on the entire dataset to both select the model and to judge its accuracy. This whole discussion should have convinced you that this procedure is _almost sure_ to produce disappointing real-world performance.  
+
+In [Estimating the Maximum Expected Value: An Analysis of (Nested) Cross Validation and the Maximum Sample Average](https://arxiv.org/pdf/1302.7175.pdf) Van Hasselt studies the case of performing selection when the value estimates are biased. In particular he considers the case of _nested crossvalidation_, i.e., where the data is split into $K$ folds and within each fold perform another $L$-fold crossvalidation (train on $L-1$ internal folds and evaluate on the remaining fold and average over all the data). He distinguishes between two cases where $K-1$ folds are used for maximzation and the remaining fold for accuracy estimation (called _Low Bias Crossvalidation_) and using one fold for optimization and the remaining $K-1$ folds for accuracy estimation (called _Low Variance Crossvalidation_). In certain cases nested crossvalidation can yield negative bias (with increased variance) which may be desirable. He concludes that there is no _universally_ good way to guarantee a good estimator of performance. He experimentally shows that even the usual recommendation of 5 or 10 fold crossvalidation can be quite bad.
+
+Miscellany
+----------
+Reinforcement learning using the Q-learning algorithm iteratively updates an estimate of the state-action value (so-called Q-value) as follows:
+$$Q_{t+1}(s_t, a_t) = Q_t(s_t, a_t) + \alpha (r_t + \gamma \,\mbox{max}_a Q_t(s_{t+1}, a) − Q_t(s_t, a_t))$$
+Notice how the updated state-action value depends on the estimate of the value of the maximizing action in the next state. We know from all the discussion above that, because we are using the current estimate $Q_t$ to both maximize and evaluate the value of the maximizing action, it will be biased high after the update, even if the current estimate $Q_t$ is an unbiased estimator of the value of every state-action pair. 
+
+Van Hasselt proposed [Double Q-Learning](https://papers.nips.cc/paper/3964-double-q-learning.pdf) to mitigate this problem using two estimators $A$ and $B$ estimated on different sets of data, and maintaining two $Q$ functions. In each step, a randomly selected $Q$ function is updated where the optimization is done using the same $Q$ function but the value is obtained from the other. He empirically shows that Double Q-learning converges more quickly than the vanilla version. 
