@@ -30,6 +30,15 @@
     </item>
     
     <item>
+      <title>Crossvalidation</title>
+      <link>/tags/crossvalidation/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/crossvalidation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Inverse Optimization</title>
       <link>/tags/inverse-optimization/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
@@ -44,6 +53,24 @@
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/linear-programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Postdecision suprise</title>
+      <link>/tags/postdecision-suprise/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/postdecision-suprise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Selection bias</title>
+      <link>/tags/selection-bias/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/selection-bias/</guid>
       <description></description>
     </item>
     

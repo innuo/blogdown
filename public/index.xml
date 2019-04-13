@@ -6,10 +6,20 @@
     <description>Recent content in Home on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Crossvalidation and the Disappointed Optimizer</title>
+      <link>/post/2019/03/25/crossvalidation-and-the-disappointed-optimizer/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/03/25/crossvalidation-and-the-disappointed-optimizer/</guid>
+      <description>Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in the excellent article, The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis by Smith and Winkler.
+Have you noticed that the checkout lanes you choose at the grocery store tend to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts?</description>
+    </item>
     
     <item>
       <title>Extrapolating by Inverse Optimization</title>
