@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 13 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Understanding Pearl’s Front-door Magic</title>
+      <link>/post/2019/04/13/understanding-pearl-s-front-door-magic/</link>
+      <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/04/13/understanding-pearl-s-front-door-magic/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Crossvalidation and the Disappointed Optimizer</title>
