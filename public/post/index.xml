@@ -12,12 +12,13 @@
     
     
     <item>
-      <title>Understanding Pearl’s Front-door Magic</title>
-      <link>/post/2019/04/13/understanding-pearl-s-front-door-magic/</link>
+      <title>Simulation View of Causality</title>
+      <link>/post/2019/04/13/understanding-pearl-s-front-door-magic-part-i/</link>
       <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/2019/04/13/understanding-pearl-s-front-door-magic/</guid>
-      <description></description>
+      <guid>/post/2019/04/13/understanding-pearl-s-front-door-magic-part-i/</guid>
+      <description>Wherein I try to present and intuitive account of causal reasoning and the important notion of the do-operator while avoiding some of the complexities of the do-calculus, d-separation and the like.
+Imagine that we have a model of a physical phenomenon whose attributes of interest are \(X\) and \(Y\). For example \(X\) could be temperature of mixture of gases and \(Y\) could be rate of a chemical reaction between the gases.</description>
     </item>
     
     <item>
