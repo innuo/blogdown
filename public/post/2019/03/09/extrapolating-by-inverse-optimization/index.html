@@ -91,7 +91,7 @@ x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 <p>The above optimization problem with a linear objective and constraints is called a <em>Linear Program</em> for which there exist very efficient solvers. Look below for a basic implementation of a linear program in R.</p>
 <p>That is, if for any customer Alice knew the parameters of <em>their</em> optimization problem (<span class="math inline">\(v_i\)</span> up to a normalizing scalar, <span class="math inline">\(b_i\)</span> and <span class="math inline">\(d_i\)</span>) then predicting the purchase behavior is easy. It just involves solving the above problem for any price vector of interest <span class="math inline">\(p\)</span> to obtain a prediction of that customer’s purchase quantity vector <span class="math inline">\(x_i\)</span>. Note that, albeit esoteric, the optimizer defines a family of regression functions <span class="math inline">\(x_i = Opt(p_t; \theta)\)</span> parameterized by <span class="math inline">\(\theta \triangleq (v_i, b_i, d_i)\)</span>, in principle, no different from any other family.</p>
 <p>Therefore the problem of <em>learning</em> the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it is posed as <em>inverting</em> the optimization procedure, is studied under the heading <em>Inverse Optimization</em>.</p>
-<p>(The term engineers use for such an <em>inverting</em> process, that is, estimating the parameters of a system from observations, is <em>System Identification</em>. Although many of the techniques that engineers use exploit some special structure of their systems, their <em>task</em> is exactly the same as Alice’s.)</p>
+<p>(The term engineers use for such an <em>inverting</em> process, that is, estimating the parameters of a system from observations of behavior, is <em>System Identification</em>. Although many of the techniques that engineers use exploit some special structure of their systems, their <em>task</em> is exactly the same as Alice’s.)</p>
 </div>
 <div id="bayesianism-as-commonsense" class="section level2">
 <h2>Bayesianism as Commonsense</h2>
@@ -115,12 +115,14 @@ x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 \hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
 \mbox{subject to} &amp;\;\; x_{it} = Opt(p_t, \theta) 
 \end{aligned}
-\]</span> where <span class="math inline">\(p_t\)</span> is the price for week <span class="math inline">\(t\)</span> and <span class="math inline">\(q_{it}\)</span> is the quanty vector purchased by customer <span class="math inline">\(i\)</span> that week. Note how even though we only care about an estimate for <span class="math inline">\(\theta\)</span> the optimization problem is over <span class="math inline">\(\theta\)</span> as well as <span class="math inline">\(x\)</span> (the vector of predictions of the quantities from the model).</p>
+\]</span>
+where <span class="math inline">\(p_t\)</span> is the price for week <span class="math inline">\(t\)</span> and <span class="math inline">\(q_{it}\)</span> is the quanty vector purchased by customer <span class="math inline">\(i\)</span> that week. Note how even though we only care about an estimate for <span class="math inline">\(\theta\)</span> the optimization problem is over <span class="math inline">\(\theta\)</span> as well as <span class="math inline">\(x\)</span> (the vector of predictions of the quantities from the model).</p>
 <p>Again, the above optimization problem is to choose the parameter vector <span class="math inline">\(\theta_i\)</span> (and the predictions <span class="math inline">\(x\)</span> from that parameter vector) that minimize the squared error between the predictions <span class="math inline">\(x_{it}\)</span> of the simulator and the observed quantities <span class="math inline">\(q_{it}\)</span>. The solution of this problem will yield the estimate the parameter vector for customer <span class="math inline">\(i\)</span>.</p>
 <p>(Like in the discussion above if we have prior knowledge about reasonable values for the parameters or on how the parameters vary between customers, we can use this knowledge by adding cost terms into the objective. Note that this way of adding cost terms into the objective to represent prior knowledge and then minimizing the overall cost yielding a point estimate of the parameters is called <em>Maximum A Posteriori</em> estimation in Bayesian lingo.)</p>
 <p>We notice that the above inverse optimization problem has a <em>nested</em> structure. The <em>inner</em> constraints are based on the <span class="math inline">\(Opt(.)\)</span> which is a linear program, i.e., an optimization problem. The problem is consequently a special case of what is called a <em>bilevel</em> optimization problem.</p>
 <p>Bilevel optimization problems have the structure of an <em>outer</em> optimization problem subject to constraints dervied from an <em>inner</em> optimization problem. General bilevel optimization problems are difficult to solve but for certain special cases (which include Alice’s problem) they can be reformulated as <em>Mathematical Programs with Equilibrium Constraints (MPEC)</em>, where certain optimality conditions of the inner optimization problem are exploited to avoid the inner optimization-based constraints.</p>
-<p>Let us make all this a little clearer with Alice’s example. Again her <span class="math inline">\(Opt(.)\)</span> problem is written as <span class="math display">\[\begin{aligned}
+<p>Let us make all this a little clearer with Alice’s example. Again her <span class="math inline">\(Opt(.)\)</span> problem is written as
+<span class="math display">\[\begin{aligned}
 x_{it} &amp;= \mbox{arg max}_x \; v_i^T x \\
 \mbox{subject to} &amp;\;\; \smash{p_t^T} x \leq b_{i} \\
 &amp;\; \; A x \leq d_i
@@ -137,7 +139,7 @@ A x_{it} &amp;\leq d_i \\
 \mu^T (A x_{it} - d_i) &amp;= 0
 \end{aligned}
 \]</span></p>
-<p>The quantity <span class="math inline">\(\lambda\)</span> and the entries of <span class="math inline">\(\mu\)</span> are called the <em>Lagrange multipliers</em> in optimization theory, and there is one for every constraint in the problem. Note how the KKT constraints are all linear in <span class="math inline">\(x_{it}\)</span>, <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> except for the last two, which are called the <em>complementarity constraints</em>. (Complementary because, if <span class="math inline">\(\lambda\)</span> is non-zero then <span class="math inline">\(p_t^T - x\)</span> has to be zero and vice-versa.) They encode the notion that if at optimality a certain constraint is inactive (i.e., the constraint might as well have not been part of the original problem – it does not restrict the optimal solution), then the corresponding Lagrange multiplier has to be zero.</p>
+<p>The quantity <span class="math inline">\(\lambda\)</span> and the entries of <span class="math inline">\(\mu\)</span> are called the <em>Lagrange multipliers</em> in optimization theory, and there is one for every constraint in the problem. Note how the KKT constraints are all linear in <span class="math inline">\(x_{it}\)</span>, <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> <em>except</em> for the last two, which are called the <em>complementarity constraints</em>. (Complementary because, if <span class="math inline">\(\lambda\)</span> is non-zero then <span class="math inline">\(p_t^T - x\)</span> has to be zero and vice-versa.) They encode the notion that if at optimality a certain constraint is inactive (i.e., the constraint might as well have not been part of the original problem – it does not restrict the optimal solution), then the corresponding Lagrange multiplier has to be zero.</p>
 <p>The first condition is called the <em>stationarity</em> condition, the second and third are called <em>primal feasibility</em> conditions (these are just a copy of the constraints from the original problem), and the fourth and the fifth are called <em>dual feasibility</em> conditions (the Lagrange multipliers for inequality constraints cannot be negative).</p>
 <p>For a linear program the KKT conditions are not only necessary but sufficient for optimality. That is <em>if</em> we found a primal feasible <span class="math inline">\(x_{it}\)</span> and dual feasible <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span> which also satisfy the stationarity and complementarity conditions, <em>then</em> <span class="math inline">\(x_{it}\)</span> is an optimal solution to the original optimization problem.</p>
 <p>We can use this fact to rewrite the bilevel optimization problem. That is we can translate the problem</p>
@@ -145,7 +147,8 @@ A x_{it} &amp;\leq d_i \\
 \hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
 \mbox{subject to} &amp;\;\; x_{it} = Opt(p_t, \theta) 
 \end{aligned}
-\]</span> to an equivalent problem</p>
+\]</span>
+to an equivalent problem</p>
 <p><span class="math display">\[\begin{aligned}
 \hat{\theta}_i, \hat{x} \triangleq  (\hat{v}_i, \hat{b}_i, \hat{d}_i, \hat{x}) &amp;= \mbox{arg min}_{\theta, x} \;\sum_t{(x_{it} - q_{it})^2} \\
 \mbox{subject to} &amp;\;\;  \\ 
@@ -165,16 +168,15 @@ A x_{it} &amp;\leq d_i \\
 <p>Assume that Alice was successful in accurately estimating the parameters of her model <span class="math inline">\(Opt(.)\)</span> and now wants to maximize her own profit by adjusting her price vector <span class="math inline">\(p\)</span>. One should be able to convince oneself that this problem is also a bilevel optimization problem. In fact, the interaction of her prices and the customer purchase behavior is an instance of a <em>Stackleberg game</em> that models economic scenarios with such a leader-follower dynamic. Bilevel optimization problems pop up in the study of equilibria in Stackleberg games, and have many other economic applications. While the price of fruit is important in its own right, my own interest in this topic is due to its applicability to designing optimal energy portfolios.</p>
 <p>Before I conclude, I want to discuss the connection between Inverse Optimization and <em>Inverse Reinforcement Learning (IRL)</em>, which at least superficially seem like they ought to be related. IRL deals with the estimation of the reward function that an agent is optimizing by observing its behavior in an environment. This can be useful, for example, when we want to train a robot to imitate a human whose behavior we can observe but not the reward function she is optimizing.</p>
 <p>To formulate Alice’s problem as IRL, we model her customers as agents who find themselves in a <em>state</em> which is the price regime set by Alice, and take an <em>action</em> which is the quanities they purchase. In order to train RL agents that behave like the customers, we would need the reward function that maps a state and action to a reward value, i.e., a function that maps a price and quantity vector to a reward. The reward function for the <span class="math inline">\(i^{th}\)</span> customer in Alice’s model be written as (where <span class="math inline">\(s\)</span> is the state and <span class="math inline">\(a\)</span> is the action)</p>
-<span class="math display">\[\begin{aligned}
-r(s, a) &amp;= \left\{
-                \begin{array}{ll}
-                  v_i^T a \;\; \mbox{if} \;\; s^T a \leq b_i \;\&amp; \;\; A\, a \leq d_i \\
-                  -\infty \;\; \mbox{otherwise}
-                  
-                \end{array}
-              \right.
-\end{aligned}\]</span>
-<p>IRL attempts to approximate this reward function (without assuming the functional form above) from historical data (that is, the recorded behavior of customers), which can then be used to reinforcement learn a simulator for customer behavior – essentially to reverse engineer the <span class="math inline">\(Opt(.)\)</span> function from data. In other words, the IRL way of solving Alice’s problem lies somewhere in between the regression approach and inverse optimization approach, by assuming a bit more than the former and a bit less than the latter.</p>
+<p>\begin{aligned}
+r(s, a) &amp;= {
+\begin{array}{ll}
+v_i^T a ;;  ;; s^T a b_i ;&amp; ;; A, a d_i \
+-;; </p>
+<pre><code>            \end{array}
+          \right.</code></pre>
+<p>\end{aligned}
+IRL attempts to approximate this reward function (without assuming the functional form above) from historical data (that is, the recorded behavior of customers), which can then be used to reinforcement learn a simulator for customer behavior – essentially to reverse engineer the <span class="math inline">\(Opt(.)\)</span> function from data. In other words, the IRL way of solving Alice’s problem lies somewhere in between the regression approach and inverse optimization approach, by assuming a bit more than the former and a bit less than the latter.</p>
 </div>
 <div id="miscellany" class="section level2">
 <h2>Miscellany</h2>
@@ -205,7 +207,8 @@ cat(paste0(&#39;Status: &#39;, sol$status))
 ## Status: optimal
 cat(paste0(round(sol$quantities, 2))) #print optimal quantity vector
 ## 2.67 1</code></pre>
-<p><strong>A mixed-integer formulation for OR constraints (so-called “disjunctions”)</strong>. Complementarity constraints restrict a variable to be zero whenever another is non-zero. More generally in a optimization problem over a vector <span class="math inline">\(x\)</span>, we might want to add the constraint that at least one of the two linear functions <span class="math inline">\(f(x)\)</span> and <span class="math inline">\(g(x)\)</span> must be zero. That is, either <span class="math inline">\(f(x) =0\)</span> or <span class="math inline">\(g(x) =0\)</span>, written as <span class="math inline">\(f(x) g(x) = 0\)</span> (a so-called <em>bilinear</em> constraint).</p>
+<p><strong>A mixed-integer formulation for OR constraints (so-called “disjunctions”)</strong>.
+Complementarity constraints restrict a variable to be zero whenever another is non-zero. More generally in a optimization problem over a vector <span class="math inline">\(x\)</span>, we might want to add the constraint that at least one of the two linear functions <span class="math inline">\(f(x)\)</span> and <span class="math inline">\(g(x)\)</span> must be zero. That is, either <span class="math inline">\(f(x) =0\)</span> or <span class="math inline">\(g(x) =0\)</span>, written as <span class="math inline">\(f(x) g(x) = 0\)</span> (a so-called <em>bilinear</em> constraint).</p>
 <p>This non-linear constraint can be “linearized” by adding another variable <span class="math inline">\(z\)</span> to the optimization problem and replacing the bilinear constraint with the following constraints</p>
 <p><span class="math display">\[\begin{aligned}
 -Mz \leq f(x) &amp;\leq M z \\
@@ -220,8 +223,10 @@ z &amp;\in \{0, 1\}
 <h2>References</h2>
 <ol style="list-style-type: decimal">
 <li>Andrew Gelman, <a href="https://statmodeling.stat.columbia.edu/2014/02/12/think-identifiability-bayesian-inference/">How to think about “identifiability” in Bayesian inference?</a></li>
-<li>Ahuja and Orling, <a href="https://dspace.mit.edu/bitstream/handle/1721.1/2696/SWP-4002-40939332.pdf;sequence=1">Inverse Optimization, Part 1: Linear Programming and General Problem</a>. This paper talks about finding the cost vector <span class="math inline">\(v\)</span> of a linear programming problem given the solution. Under their particular formulation this inverse problem itself turns out be a linear program.</li>
-<li>Dong and Chen, <a href="https://papers.nips.cc/paper/7294-generalized-inverse-optimization-through-online-learning.pdf">Generalized Inverse Optimization through Online Learning</a>. This paper presents an algorithm to perform online updates to track changing parameters of an optimization problem when observations of inputs and decisions are revealed one at a time.</li>
+<li>Ahuja and Orling, <a href="https://dspace.mit.edu/bitstream/handle/1721.1/2696/SWP-4002-40939332.pdf;sequence=1">Inverse Optimization, Part 1:
+Linear Programming and General Problem</a>. This paper talks about finding the cost vector <span class="math inline">\(v\)</span> of a linear programming problem given the solution. Under their particular formulation this inverse problem itself turns out be a linear program.</li>
+<li>Dong and Chen, <a href="https://papers.nips.cc/paper/7294-generalized-inverse-optimization-through-online-learning.pdf">Generalized Inverse Optimization through Online
+Learning</a>. This paper presents an algorithm to perform online updates to track changing parameters of an optimization problem when observations of inputs and decisions are revealed one at a time.</li>
 </ol>
 </div>
 

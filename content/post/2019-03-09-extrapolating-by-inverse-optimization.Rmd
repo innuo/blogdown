@@ -50,7 +50,7 @@ That is, if for any customer Alice knew the parameters of _their_ optimization p
 
 Therefore the problem of _learning_ the regressor reduces to estimating these parameters from historical prices and their associated quantity vectors. This estimation problem, because it is posed as _inverting_ the optimization procedure, is studied under the heading _Inverse Optimization_.  
 
-(The term engineers use for such an _inverting_ process, that is, estimating the parameters of a system from observations, is  _System Identification_. Although many of the techniques that engineers use exploit some special structure of their systems, their _task_ is exactly the same as Alice's.) 
+(The term engineers use for such an _inverting_ process, that is, estimating the parameters of a system from observations of behavior, is  _System Identification_. Although many of the techniques that engineers use exploit some special structure of their systems, their _task_ is exactly the same as Alice's.) 
 
 Bayesianism as Commonsense
 ------------------------------
@@ -114,7 +114,7 @@ A x_{it} &\leq d_i \\
 \end{aligned}
 $$
 
-The quantity $\lambda$ and the entries of $\mu$ are called the _Lagrange multipliers_ in optimization theory, and there is one for every constraint in the problem. Note how the KKT constraints are all linear in $x_{it}$, $\lambda$ and $\mu$ except for the last two, which are called the _complementarity constraints_. (Complementary because, if $\lambda$ is non-zero then $p_t^T - x$ has to be zero and vice-versa.) They encode the notion that if at optimality a certain constraint is inactive (i.e., the constraint might as well have not been part of the original problem -- it does not restrict the optimal solution), then the corresponding Lagrange multiplier has to be zero. 
+The quantity $\lambda$ and the entries of $\mu$ are called the _Lagrange multipliers_ in optimization theory, and there is one for every constraint in the problem. Note how the KKT constraints are all linear in $x_{it}$, $\lambda$ and $\mu$ _except_ for the last two, which are called the _complementarity constraints_. (Complementary because, if $\lambda$ is non-zero then $p_t^T - x$ has to be zero and vice-versa.) They encode the notion that if at optimality a certain constraint is inactive (i.e., the constraint might as well have not been part of the original problem -- it does not restrict the optimal solution), then the corresponding Lagrange multiplier has to be zero. 
 
 The first condition is called the _stationarity_ condition, the second and third are called _primal feasibility_ conditions (these are just a copy of the constraints from the original problem), and the fourth and the fifth are called _dual feasibility_ conditions (the Lagrange multipliers for inequality constraints cannot be negative).
 
