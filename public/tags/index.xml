@@ -6,10 +6,64 @@
     <description>Recent content in Tags on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>causal conditioning</title>
+      <link>/tags/causal-conditioning/</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/causal-conditioning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>do calculus</title>
+      <link>/tags/do-calculus/</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/do-calculus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>front-door criterion</title>
+      <link>/tags/front-door-criterion/</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/front-door-criterion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Crossvalidation</title>
+      <link>/tags/crossvalidation/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/crossvalidation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Postdecision suprise</title>
+      <link>/tags/postdecision-suprise/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/postdecision-suprise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Selection bias</title>
+      <link>/tags/selection-bias/</link>
+      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/selection-bias/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Approximate Bayesian Computation</title>
@@ -30,15 +84,6 @@
     </item>
     
     <item>
-      <title>Crossvalidation</title>
-      <link>/tags/crossvalidation/</link>
-      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/crossvalidation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Inverse Optimization</title>
       <link>/tags/inverse-optimization/</link>
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
@@ -53,24 +98,6 @@
       <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/linear-programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Postdecision suprise</title>
-      <link>/tags/postdecision-suprise/</link>
-      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/postdecision-suprise/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Selection bias</title>
-      <link>/tags/selection-bias/</link>
-      <pubDate>Mon, 25 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/selection-bias/</guid>
       <description></description>
     </item>
     
