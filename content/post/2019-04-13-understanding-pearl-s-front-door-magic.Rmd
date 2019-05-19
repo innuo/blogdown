@@ -200,13 +200,13 @@ plot(density(df_intervention$E[df_intervention$R == 0]), col="blue",
 lines(density(df_counterfactual[["E_r"]]), col="red")
 ```
 </div>
-Perhaps surprisingly they turn out to be the same. A moment's reflection about how these two distributions were generated from Sol's simulator should convince you that the inteventional distribution obtained by causal conditioning is _precisely_ the summary of counterfactuals over all the instances. In fact the interventional distribution $P(E|do(R=r))$ is could more precisely be written as $P(E_r|R_r = r)$. (Note that this is __non-standard notation__ but it makes it easier for me to keep everything straight.)
+Perhaps surprisingly they turn out to be the same. A moment's reflection about how these two distributions were generated from Sol's simulator should convince you that the inteventional distribution obtained by causal conditioning is _precisely_ the summary of counterfactuals over all the instances. In fact the interventional distribution $P(E|do(R=r))$ could more precisely be written as $P(E_r|R_r = r)$. (Note that this is __non-standard notation__ but makes it easier for me to keep everything straight.)
 
 The notion of counterfactuals is therefore more fundamental than the notion of causal conditioning or interventional distributions. All interventional questions could be answered by generating counterfactual samples, and then appropriately conditioning and aggregating them.
 
 We can ask very general conditional questions about this counterfactual universe. For example, "for a week with low energy production, what is the distribution of the decrease in energy production if we intervened to make it not rain?" Answer: $P(E - E_r|R_r=0, E < e)$. Filter the above table for $E < e$ and compute the histogram over the difference $E-E_r$ on the remaining rows.
 
-We have been asking counterfactual questions about instances generated from the simulator. What if Sol wanted take a particular week from his dataset and ask what the energy production would have been had it not rained in _that week_? Since he only has access to the $C$, $R$ and $E$ variables for that week but _not_ the noise ($U_.$) variables, he cannot follow our simple procedure of running simulator with arguments do_r=0 and do_uc, do_ur and do_ue set to the particular values. The procedure he needs to follow is to first _estimate_ the _posterior distribution_ over noise variables from the probabilistic model (which the simulator mirrors) conditioned on the observations for that week, and use samples from this posterior as arguments for the simulator. In pseudocode 
+We have been asking counterfactual questions about instances generated from the simulator. What if Sol wanted take a particular week from his dataset and ask what the energy production would have been had it not rained in _that week_? Since he only has access to the $C$, $R$ and $E$ variables for that week but _not_ the noise ($U_.$) variables, he cannot follow our simple procedure of running simulator with arguments do_r=0 and do_uc, do_ur and do_ue set to the particular values. The procedure he needs to follow is to first _estimate_ the _posterior distribution_ over the noise variables from the probabilistic model (which the simulator mirrors) conditioned on the observations for that week, and use samples from this posterior as arguments for the simulator. In pseudocode 
 
 <div class = "blue">
 ```{R eval=F}
@@ -248,13 +248,13 @@ Note that this is the same _backdoor formula_ we derived earlier by appealing to
 
 - __Graph unknown, data with all variables measured__. Estimating the  causal structure is much easier if the data can be measured "actively", that is, by actually intervening in the system that you are studying. This is not a luxury that is available in most circumstances. Several algorithms have been proposed that exploit the Markov independences implied by a causal structure (under another fairly mild assumption called _faithfulness_) to estimate (the estimable parts of) the causal graph from passively collected data. 
 - __Graph unknown, not all variables measured__. Even when not all the variables in the graph are measured certain facts about the causal structure can be inferred from the incomplete data. I do not understand this topic well enough to say more.
-- __Graph unknown, no data__. If you happen to find yourself in this situation, you should probably seek out a Bodhisattva to help with your counterfactual questions.
+- __Graph unknown, no data__. If you happen to find yourself in this situation, you might be better off seeking out a Bodhisattva to help with your counterfactual questions.
 
 
 References
 -----------
 1. [If correlation doesn’t imply causation, then what does?](http://www.michaelnielsen.org/ddi/if-correlation-doesnt-imply-causation-then-what-does/), by Michael Nielsen. A excellent exposition of the basic concepts of causal calculus. A good place to start for the beginner 
 2. [The Book of Why](http://bayes.cs.ucla.edu/WHY/), by Judea Pearl & Dana Mackenzie. You would do well read this book by the father of modern causal reasoning intended for the popular audience. 
-3. [Lecture Notes](https://www.stat.cmu.edu/~cshalizi/uADA/12/), Cosma Shalizi. This is an excellent resource for slightly more technical material but presented in a very engaging manner, not only about causality but other statistical topics.
+3. [Lecture Notes](https://www.stat.cmu.edu/~cshalizi/uADA/12/), by Cosma Shalizi. This is an excellent resource for slightly more technical material but presented in a very engaging manner, not only about causality but other statistical topics.
 
 
