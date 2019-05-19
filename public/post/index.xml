@@ -6,17 +6,17 @@
     <description>Recent content in Posts on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 13 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Simulation View of Causality</title>
-      <link>/post/2019/04/13/understanding-pearl-s-front-door-magic-part-i/</link>
-      <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
+      <link>/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/2019/04/13/understanding-pearl-s-front-door-magic-part-i/</guid>
+      <guid>/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/</guid>
       <description>div.blue pre.r { background-color:azure; } div.blue pre { background-color:#ffe2dd; }  My attempt to present an intuitive account of causal reasoning and the important notions of causal conditioning and counterfactuals without resorting to some of the formalities of do-calculus, d-separation, couterfactual notation and the like. All the programs in the post will be in R, but should be accessible to readers with no experience with the language.
 Causal reasoning from scientific data has undergone a quiet revolution in the past couple of decades.</description>
     </item>
