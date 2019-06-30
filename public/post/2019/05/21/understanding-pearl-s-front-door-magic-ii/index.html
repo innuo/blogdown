@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Understanding Pearl&#39;s Front-Door Magic | Notes To An Earlier Self</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Understanding Pearl&rsquo;s Front-Door Magic</span></h1>
+
+<h2 class="date">2019/05/21</h2>
+</div>
+
+<main>
+
+
+
+<p><em>Pearl’s algorithmic framework for causal reasoning called <strong>do-calculus</strong> can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns – namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) using only the rules of probability</em>.</p>
+<p>In a previous post I attempted to explain the distinction between <em>Bayesian</em> and <em>causal</em> (or <em>interventional</em>) conditioning by introducing the <em>do</em> notation. In that solar panel washing story the scientist was able to construct a simulator for the data generating process, and answer interventional and counterfactual questions by appropriately manipulating the simulator. We cannot in general follow this procedure. In particular when not all variables are measured, even if we know the causal graph underlying the system under study, we will not be able to estimate all the mechanisms necessary to implement the simulator.</p>
+<p>Let us tell a different story to illustrate the problem. Imagine an intrepid statistician Ada working for a school district trying to answer the following question: will adding computer programming to the elementary school curriculum have a sufficiently beneficial effect on the students’ math proficiency in middle school to justify the additional cost?</p>
+<p>Ada obtains a compilation of grade-level curriculum and aggregated proficiency data for schools across the country. She notices in the data many elementary schools that offer optional after-school programming classes to their students. A quick analysis shows her that indeed the middle schools that are in neigborhoods where elementary schools offer these classes have higher standardized math scores.</p>
+<p>However, Ada suspects that part of the effect is due to a common cause: perhaps districts where schools offer the programming classes have more progressive administrators and their imaginative curriculum design independently benefits middle school math proficiency. Let us call this so-called <em>causal confounder</em> “curriculum creativity” and denote it by the variable <span class="math inline">\(C\)</span>. Further let us denote the optional elementary school programming classes by <span class="math inline">\(P\)</span>, and middle school math proficiency by <span class="math inline">\(M\)</span>.</p>
+<p>The causal diagram (the directed acyclic graph) that depicts Ada’s causal hypotheses is</p>
+<p><img src="/post/2019-05-21-understanding-pearl-s-front-door-magic-ii_files/programming_example1.png" style="width:30.0%" /></p>
+<p><span class="math display">\[\begin{eqnarray}
+Pr(M | do(P = p)) &amp;=&amp; \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
+&amp;=&amp; \sum_c \color{blue}{\sum_e Pr(M, E=e | P=p, C=c)} Pr(C = c) \\
+&amp;=&amp; \sum_c \sum_e \color{blue}{Pr(M| E=e, C=c) Pr(E=e|P=p, C=c)} Pr(C = c) \\
+&amp;=&amp; \sum_c \sum_e Pr(M| E=e, C=c) \color{blue}{Pr(E=e|P=p)} Pr(C = c) \\
+&amp;=&amp; \sum_c \sum_e  Pr(M| E=e, C=c) Pr(E=e|P=p) \color{blue}{\sum_{p&#39;} Pr(C = c|P=p&#39;) Pr(P=p&#39;)} \\
+&amp;=&amp; \sum_c \sum_e \color{blue}{\sum_{p&#39;}}  Pr(M| \color{blue}{P=p&#39;}, E=e, C=c) Pr(C=c | P=p&#39;, \color{blue}{E=e}) Pr(E=e|P=p) Pr(P=p&#39;) \\
+&amp;=&amp; \sum_e \sum_{p&#39;} \color{blue}{\sum_{c}  Pr(M, C=c| P=p&#39;, E=e)} Pr(E=e|P=p) Pr(P=p&#39;) \\
+&amp;=&amp;  \sum_e \sum_{p&#39;}  Pr(M| P=p&#39;, E=e) Pr(E=e|P=p) Pr(P=p&#39;)
+\end{eqnarray}\]</span></p>
+
+</main>
+
+  <footer>
+  <footer>
+<br /> <br /> <hr> <div class="just-comments" data-apikey="6e288633-d2ef-48b5-ae19-e03c38c46c67"></div>
+</footer>
+
+<script async src="https://just-comments.com/w.js"></script>
+
+<script src="//yihui.name/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.name/js/center-img.js"></script>
+
+  
+  <hr/>
+  &copy; Harsha Veeramachaneni 2019. Made using  <a href="https://github.com/rstudio/blogdown">blogdown</a> &amp; <a href="https://gohugo.io/">Hugo</a>
+  
+  </footer>
+  </body>
+</html>
+
