@@ -17,7 +17,7 @@
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/05/21/understanding-pearl-s-front-door-magic-ii/</guid>
-      <description>Pearl’s algorithmic framework for causal reasoning called do-calculus can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns – namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) using only the rules of probability.
+      <description>Judea Pearl’s brilliant algorithmic framework for causal reasoning called do-calculus can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns – namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) without appealing to the rules of do-calculus.
 In a previous post I attempted to explain the distinction between Bayesian and causal (or interventional) conditioning by introducing the do notation.</description>
     </item>
     

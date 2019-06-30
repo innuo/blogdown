@@ -12,19 +12,37 @@ tags:
   - front-door criterion
 ---
 
-_Pearl's algorithmic framework for causal reasoning called __do-calculus__ can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns -- namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) using only the rules of probability_.
+_Judea Pearl's brilliant algorithmic framework for causal reasoning called __do-calculus__ can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns -- namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) without appealing to the rules of do-calculus_.
 
-In a previous post I attempted to explain the distinction between _Bayesian_ and _causal_ (or _interventional_) conditioning by introducing the _do_ notation. In that solar panel washing story the scientist was able to construct a simulator for the data generating process, and answer interventional and counterfactual questions by appropriately manipulating the simulator. We cannot in general follow this procedure. In particular when not all variables are measured, even if we know the causal graph underlying the system under study, we will not be able to estimate all the mechanisms necessary to implement the simulator.  
+In a [previous post](https://modsimopt.netlify.com/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/) I attempted to explain the distinction between _Bayesian_ and _causal_ (or _interventional_) conditioning by introducing the _do_ notation. In that solar panel washing story the scientist was able to construct a simulator for the data generating process, and answer interventional and counterfactual questions by appropriately manipulating the simulator. We cannot in general follow this procedure. In particular when not all variables are measured, even if we know the causal graph underlying the system under study, we will not be able to estimate all the mechanisms necessary to implement the simulator.  
+
+Confounding and Controlling
+---------------------------
 
 Let us tell a different story to illustrate the problem. Imagine an intrepid statistician Ada working for a school district trying to answer the following question: will adding computer programming to the elementary school curriculum have a sufficiently beneficial effect on the students' math proficiency in middle school to justify the additional cost?
 
 Ada obtains a compilation of grade-level curriculum and aggregated proficiency data for schools across the country. She notices in the data many elementary schools that offer optional after-school programming classes to their students. A quick analysis shows her that indeed the middle schools that are in neigborhoods where elementary schools offer these classes have higher standardized math scores. 
 
-However, Ada suspects that part of the effect is due to a common cause: perhaps districts where schools offer the programming classes have more progressive administrators and their imaginative curriculum design independently benefits middle school math proficiency. Let us call this so-called _causal confounder_ "curriculum creativity" and denote it by the variable $C$. Further let us denote the optional elementary school programming classes by $P$, and middle school math proficiency by $M$. 
+However, Ada suspects that part of the effect is due to a common cause: perhaps districts where schools offer the programming classes have more progressive administrators and their imaginative curriculum design independently benefits middle school math proficiency. Let us call this so-called _causal confounder_ "curriculum creativity" and denote it by the variable $C$. Further let us denote the availability of elementary school programming classes by $P$, and middle school math proficiency by $M$. 
 
 The causal diagram (the directed acyclic graph) that depicts Ada's causal hypotheses is 
 
 ![](/post/2019-05-21-understanding-pearl-s-front-door-magic-ii_files/programming_example1.png){width=30%}
+
+She knows that if the data she has in her possession has measurements of curriculum creativity $C$, she _should control_ for that variable to accurately estimate the causal influence of $P$ on $M$.
+
+What does such controlling entail? In the language of modern causal reasoning she wishes to estimate the interventional probability $Pr(M|do(P =p))$, i.e., the probability of math proficiency $M$ if she were to intervene and _make_ the programming class availability variable to $p$. (For the sake of our argument assume $P \in \{\mbox{True, False}\}$.)
+
+To generate an example from the world where we have intervened to _set_ $P=p$ we first have to generate $C = c$ and then generate $M$ according to the probability $P(M | C=c, P=p)$. Therefore the joint distribution $Pr(M, C=c|do(P=p))$ is given by
+$$ Pr(M, C=c| do(P=p)) = Pr(M| C=c, P=p) Pr(C=c)$$ 
+
+Therefore the interventional probability $Pr(M|do(P =p))$ is given by
+$$Pr(M|do(P =p)) = \sum_c Pr(M| C=c, P=p) Pr(C=c)$$
+For Ada's problem, this is the _back-door formula_, and is precisely what she needs to calculate to control for the confounder $C$. She needs to take a weighted average of the causal influence of $P$ on $M$ in each sub-population segre
+
+Front-Door Formula
+-------------------
+
 
 $$\begin{eqnarray}
 Pr(M | do(P = p)) &=& \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
@@ -38,6 +56,7 @@ Pr(M | do(P = p)) &=& \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
 \end{eqnarray}$$
 
 
+References
+----------
 
-
-
+1.After trying to do it on your own, if you want to learn how to derive the front-door formula using do-calculus see Michael Nielsen's blog post [If correlation doesn’t imply causation, then what does?](http://www.michaelnielsen.org/ddi/if-correlation-doesnt-imply-causation-then-what-does/).
