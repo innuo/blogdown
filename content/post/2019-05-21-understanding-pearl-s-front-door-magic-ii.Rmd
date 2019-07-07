@@ -1,7 +1,7 @@
 ---
 title: Understanding Pearl's Front-Door Magic
 author: ''
-date: '2019-05-21'
+date: '2019-07-06'
 slug: understanding-pearl-s-front-door-magic-ii
 categories:
   - Causality
@@ -12,7 +12,7 @@ tags:
   - front-door criterion
 ---
 
-_Judea Pearl's brilliant algorithmic framework for causal reasoning called __do-calculus__ can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns -- namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) without appealing to the rules of do-calculus_.
+_Do-calculus, Judea Pearl's comprehensive algorithmic framework for causal reasoning, can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns -- namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) without invoking the rules of do-calculus_.
 
 In a [previous post](https://modsimopt.netlify.com/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/) I attempted to explain the distinction between _Bayesian_ and _causal_ (or _interventional_) conditioning by introducing the _do_ notation. In that solar panel washing story the scientist was able to construct a simulator for the data generating process, and answer interventional and counterfactual questions by appropriately manipulating the simulator. We cannot in general follow this procedure. In particular when not all variables are measured, even if we know the causal graph underlying the system under study, we will not be able to estimate all the mechanisms necessary to implement the simulator.  
 
@@ -21,7 +21,7 @@ Confounding and Controlling
 
 Let us tell a different story to illustrate the problem. Imagine an intrepid statistician Ada working for a school district trying to answer the following question: will adding computer programming to the elementary school curriculum have a sufficiently beneficial effect on the students' math proficiency in middle school to justify the additional cost?
 
-Ada obtains a compilation of grade-level curriculum and aggregated proficiency data for schools across the country. She notices in the data many elementary schools that offer optional after-school programming classes to their students. A quick analysis shows her that indeed the middle schools that are in neigborhoods where elementary schools offer these classes have higher standardized math scores. 
+Ada obtains a compilation of grade-level curriculum and aggregated proficiency data for school districts across the country. She notices in the data many elementary schools that offer optional after-school programming classes to their students. A quick analysis shows her that indeed the middle schools that are in neigborhoods where elementary schools offer these classes have higher standardized math scores. 
 
 However, Ada suspects that part of the effect is due to a common cause: perhaps districts where schools offer the programming classes have more progressive administrators and their imaginative curriculum design independently benefits middle school math proficiency. Let us call this so-called _causal confounder_ "curriculum creativity" and denote it by the variable $C$. Further let us denote the availability of elementary school programming classes by $P$, and middle school math proficiency by $M$. 
 
@@ -29,16 +29,47 @@ The causal diagram (the directed acyclic graph) that depicts Ada's causal hypoth
 
 ![](/post/2019-05-21-understanding-pearl-s-front-door-magic-ii_files/programming_example1.png){width=30%}
 
-She knows that if the data she has in her possession has measurements of curriculum creativity $C$, she _should control_ for that variable to accurately estimate the causal influence of $P$ on $M$.
+She knows that if the data she has in her possession has measurements of curriculum creativity $C$, she should _control_ for that variable to accurately estimate the causal influence of $P$ on $M$.
 
-What does such controlling entail? In the language of modern causal reasoning she wishes to estimate the interventional probability $Pr(M|do(P =p))$, i.e., the probability of math proficiency $M$ if she were to intervene and _make_ the programming class availability variable to $p$. (For the sake of our argument assume $P \in \{\mbox{True, False}\}$.)
+What does such controlling entail? In the language of modern causal reasoning she wishes to estimate the interventional probability $Pr(M|do(P =p))$, i.e., the probability of math proficiency $M$ if she were to intervene and _set_ the programming class availability variable to $p$. (For the sake of our argument assume $p \in \{\mbox{True, False}\}$.) 
 
-To generate an example from the world where we have intervened to _set_ $P=p$ we first have to generate $C = c$ and then generate $M$ according to the probability $P(M | C=c, P=p)$. Therefore the joint distribution $Pr(M, C=c|do(P=p))$ is given by
+That is, to answer the causal query she needs to sever the causal link between $C$ and $P$ present in real-world process that generated her data, and hypothesize a data generating simulator that resembles the real-world process in all aspects but for that surgery.
+
+To generate an example from the world where she had intervened to _set_ $P=p$, the hypothesized simulator first generates $C = c$ according to its prior, and then generates $M$ according to the probability $P(M | C=c, P=p)$. Therefore the joint distribution $Pr(M, C=c|do(P=p))$ is given by
 $$ Pr(M, C=c| do(P=p)) = Pr(M| C=c, P=p) Pr(C=c)$$ 
 
-Therefore the interventional probability $Pr(M|do(P =p))$ is given by
+The interventional probability $Pr(M|do(P =p))$ is obtained by marginalizing out $C$ from this expression as
 $$Pr(M|do(P =p)) = \sum_c Pr(M| C=c, P=p) Pr(C=c)$$
-For Ada's problem, this is the _back-door formula_, and is precisely what she needs to calculate to control for the confounder $C$. She needs to take a weighted average of the causal influence of $P$ on $M$ in each sub-population segre
+For Ada's problem, this is the _back-door formula_, and is precisely what she needs to calculate to __control for the confounder__ $C$. 
+
+The path $P \textrm{--} C \textrm{--} M$ is called a _backdoor path_ from $P$ to $M$: an undirected path from $P$ to $M$, with an arrow pointing into $P$. Such a _backdoor path_ indicates possible confounding. To answer causal questions in a general causal graph, all _backdoor paths_ need to be _blocked_ by controlling for some set of variables $S$ that satisfy the _backdoor criterion_, viz., every backdoor path must pass through some variable in $S$, and $S$ should not include any descendent of the variable on which we are intervening. 
+
+(The above paragraph paraphrases [Cosma Shalizi's lecture notes](https://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch23.pdf), which present more thorough exposition of the topic and a formal derivation of the back-door formula.)
+
+
+Unobserved Confounder
+---------------------
+The reason $C$ confounds the causal effect of $P$ on $M$ (and for needing to control for it) is because even if we observed a very strong correlation between $P$ and $M$ we cannot distinguish between a large causal effect of programming classes on math scores, and the effect being entirely due to the curriculum creativity. 
+
+Unfortunately for Ada her data lacks any measurements of the creativity of the curriculum at different school districts (even if such a thing _could_ be measured), leaving her in the hazy world of _unmeasured confounding_ where she cannot apply the back-door formula to estimate the interventional probability. However, she notices that her data contains measurements of the student enrollment rates in the optional programming classes. She hypothesizes that the causal diagram including the enrollment variable $E$ looks like so
+
+![](/post/2019-05-21-understanding-pearl-s-front-door-magic-ii_files/programming_example_2.png){width=50%}
+
+The above diagram encodes Ada's causal story that math proficiency is affected by programming classes _only_ through their corresponding enrollment rates, and that the enrollment rates themselves are not directly affected by curriculum creativity. Stated differently Ada assumes that 1) the enrollment rate $E$ _blocks_ the _only_ causal path between $P$ and $M$, and 2) there are no backdoor paths from $P$ to $E$, and 3)  ???
+
+From her causal story Ada reasons as follows. 
+
+"Even though the data shows strong correlation between $P$ and $M$, not knowing $C$ prevents me from distinguishing between the two extremes: 1) $M$ is independent of $C$ given $P$, i.e., there is no _direct_ effect of curriculum creativity on math scores, and 2) $M$ is independent of $P$ given $C$, i.e., the entirety of the statistical dependence of $M$ on $P$ is due to the common parent $C$ implying no causal effect of programming classes on math scores.  
+
+"However, if I should notice in the data that school districts that do not offer programming classes have similar math scores as the districts that do but have zero enrollment, I would know that of curriculum creativity _did not_ cause the high math scores in districts with programming classes and high enrollment. In other words, the measurement of $E$ would help me distinguish between the above two extremes, even though $C$ was not measured!"
+
+Formally, what Ada realized is that, under the model defined by her causal graph, the interventional probablity $Pr(M|do(P))$ can be written in terms of the joint distribution over the variables $P, E$ and $M$, magically deconfounding causal question. 
+
+
+
+
+
+
 
 Front-Door Formula
 -------------------
@@ -52,7 +83,7 @@ Pr(M | do(P = p)) &=& \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
 &=& \sum_c \sum_e  Pr(M| E=e, C=c) Pr(E=e|P=p) \color{blue}{\sum_{p'} Pr(C = c|P=p') Pr(P=p')} \\
 &=& \sum_c \sum_e \color{blue}{\sum_{p'}}  Pr(M| \color{blue}{P=p'}, E=e, C=c) Pr(C=c | P=p', \color{blue}{E=e}) Pr(E=e|P=p) Pr(P=p') \\
 &=& \sum_e \sum_{p'} \color{blue}{\sum_{c}  Pr(M, C=c| P=p', E=e)} Pr(E=e|P=p) Pr(P=p') \\
-&=&  \sum_e \sum_{p'}  Pr(M| P=p', E=e) Pr(E=e|P=p) Pr(P=p')
+&=&  \sum_e \sum_{p'} \color{blue} {Pr(M| P=p', E=e)} Pr(E=e|P=p) Pr(P=p')
 \end{eqnarray}$$
 
 
