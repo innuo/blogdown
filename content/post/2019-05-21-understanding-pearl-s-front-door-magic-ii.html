@@ -42,11 +42,12 @@ For Ada’s problem, this is the <em>back-door formula</em>, and is precisely wh
 <p>The above diagram encodes Ada’s causal story that math proficiency is affected by programming classes <em>only</em> through their corresponding enrollment rates, and that the enrollment rates themselves are not directly affected by curriculum creativity. Stated differently Ada assumes that 1) the enrollment rate <span class="math inline">\(E\)</span> <em>blocks</em> the <em>only</em> causal path between <span class="math inline">\(P\)</span> and <span class="math inline">\(M\)</span>, and 2) there are no backdoor paths from <span class="math inline">\(P\)</span> to <span class="math inline">\(E\)</span>, and 3) ???</p>
 <p>From her causal story Ada reasons as follows.</p>
 <p>&quot;Even though the data shows strong correlation between <span class="math inline">\(P\)</span> and <span class="math inline">\(M\)</span>, not knowing <span class="math inline">\(C\)</span> prevents me from distinguishing between the two extremes: 1) <span class="math inline">\(M\)</span> is independent of <span class="math inline">\(C\)</span> given <span class="math inline">\(P\)</span>, i.e., there is no <em>direct</em> effect of curriculum creativity on math scores, and 2) <span class="math inline">\(M\)</span> is independent of <span class="math inline">\(P\)</span> given <span class="math inline">\(C\)</span>, i.e., the entirety of the statistical dependence of <span class="math inline">\(M\)</span> on <span class="math inline">\(P\)</span> is due to the common parent <span class="math inline">\(C\)</span> implying no causal effect of programming classes on math scores.</p>
-<p>“However, if I should notice in the data that school districts that do not offer programming classes have similar math scores as the districts that do but have zero enrollment, I would know that of curriculum creativity <em>did not</em> cause the high math scores in districts with programming classes and high enrollment. In other words, the measurement of <span class="math inline">\(E\)</span> would help me distinguish between the above two extremes, even though <span class="math inline">\(C\)</span> was not measured!”</p>
-<p>Formally, what Ada realized is that, under the model defined by her causal graph, the interventional probablity <span class="math inline">\(Pr(M|do(P))\)</span> can be written in terms of the joint distribution over the variables <span class="math inline">\(P, E\)</span> and <span class="math inline">\(M\)</span>, magically deconfounding causal question.</p>
+<p>“However, if I should notice in the data that school districts that do not offer programming classes have similar math scores as the districts that do but have zero enrollment, I would know that of curriculum creativity <em>did not</em> cause the high math scores in districts with programming classes and high enrollment. In other words, at least in such a case, the measurement of <span class="math inline">\(E\)</span> would help me distinguish between the above two extremes, even though <span class="math inline">\(C\)</span> was not measured!”</p>
+<p>Ada’s reasoning applies more broadly. Specifically, under the model defined by her causal graph, the interventional probablity <span class="math inline">\(Pr(M|do(P))\)</span> can be written in terms of only the joint distribution over the variables <span class="math inline">\(P, E\)</span> and <span class="math inline">\(M\)</span> yielding the <em>front-door formula</em>. The particular structure of the causal model allows Ada to magically deconfound the causal question by eliminating the need to measure <span class="math inline">\(C\)</span>.</p>
 </div>
 <div id="front-door-formula" class="section level2">
 <h2>Front-Door Formula</h2>
+<p>If we accept the veracity of the <em>back-door formula</em> above, we can derive the <em>front-door</em> formula from it using only the rules of probability, which I find more intuitive than arriving at it using the do-calculus. The following 8 lines show the derivation, with parts where the action took place shown in blue. Remember that we are after a formula for <span class="math inline">\(P(M|do(P=p))\)</span> where the variable <span class="math inline">\(C\)</span> does not appear.</p>
 <p><span class="math display">\[\begin{eqnarray}
 Pr(M | do(P = p)) &amp;=&amp; \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
 &amp;=&amp; \sum_c \color{blue}{\sum_e Pr(M, E=e | P=p, C=c)} Pr(C = c) \\
@@ -57,6 +58,13 @@ Pr(M | do(P = p)) &amp;=&amp; \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
 &amp;=&amp; \sum_e \sum_{p&#39;} \color{blue}{\sum_{c}  Pr(M, C=c| P=p&#39;, E=e)} Pr(E=e|P=p) Pr(P=p&#39;) \\
 &amp;=&amp;  \sum_e \sum_{p&#39;} \color{blue} {Pr(M| P=p&#39;, E=e)} Pr(E=e|P=p) Pr(P=p&#39;)
 \end{eqnarray}\]</span></p>
+<p>Let us look at the derivation a line at a time.</p>
+<ol style="list-style-type: decimal">
+<li>The first line is just the back-door formula from earlier.</li>
+<li>The second line writes the probability <span class="math inline">\(Pr(M|P, C)\)</span> as the marginalization over the joint probability <span class="math inline">\(Pr(M, E|P, C)\)</span>.</li>
+<li>The third line writes the joint <span class="math inline">\(Pr(M, E|P, C)\)</span> as the product of the conditional probability <span class="math inline">\(Pr(M|E, P, C)\)</span> and <span class="math inline">\(Pr(E|P, C)\)</span>.</li>
+<li></li>
+</ol>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>

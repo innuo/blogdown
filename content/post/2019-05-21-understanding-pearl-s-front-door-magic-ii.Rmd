@@ -61,19 +61,14 @@ From her causal story Ada reasons as follows.
 
 "Even though the data shows strong correlation between $P$ and $M$, not knowing $C$ prevents me from distinguishing between the two extremes: 1) $M$ is independent of $C$ given $P$, i.e., there is no _direct_ effect of curriculum creativity on math scores, and 2) $M$ is independent of $P$ given $C$, i.e., the entirety of the statistical dependence of $M$ on $P$ is due to the common parent $C$ implying no causal effect of programming classes on math scores.  
 
-"However, if I should notice in the data that school districts that do not offer programming classes have similar math scores as the districts that do but have zero enrollment, I would know that of curriculum creativity _did not_ cause the high math scores in districts with programming classes and high enrollment. In other words, the measurement of $E$ would help me distinguish between the above two extremes, even though $C$ was not measured!"
+"However, if I should notice in the data that school districts that do not offer programming classes have similar math scores as the districts that do but have zero enrollment, I would know that of curriculum creativity _did not_ cause the high math scores in districts with programming classes and high enrollment. In other words, at least in such a case, the measurement of $E$ would help me distinguish between the above two extremes, even though $C$ was not measured!"
 
-Formally, what Ada realized is that, under the model defined by her causal graph, the interventional probablity $Pr(M|do(P))$ can be written in terms of the joint distribution over the variables $P, E$ and $M$, magically deconfounding causal question. 
-
-
-
-
-
+Ada's reasoning applies more broadly. Specifically, under the model defined by her causal graph, the interventional probablity $Pr(M|do(P))$ can be written in terms of only the joint distribution over the variables $P, E$ and $M$ yielding the _front-door formula_.  The particular structure of the causal model allows Ada to magically deconfound the causal question by eliminating the need to measure $C$. 
 
 
 Front-Door Formula
 -------------------
-
+If we accept the veracity of the _back-door formula_ above, we can derive the _front-door_ formula from it using only the rules of probability, which I find more intuitive than arriving at it using the do-calculus. The following 8 lines show the derivation, with parts where the action took place shown in blue. Remember that we are after a formula for $P(M|do(P=p))$ where the variable $C$ does not appear.
 
 $$\begin{eqnarray}
 Pr(M | do(P = p)) &=& \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
@@ -85,6 +80,13 @@ Pr(M | do(P = p)) &=& \sum_c Pr(M | P=p, C=c) Pr(C = c) \\
 &=& \sum_e \sum_{p'} \color{blue}{\sum_{c}  Pr(M, C=c| P=p', E=e)} Pr(E=e|P=p) Pr(P=p') \\
 &=&  \sum_e \sum_{p'} \color{blue} {Pr(M| P=p', E=e)} Pr(E=e|P=p) Pr(P=p')
 \end{eqnarray}$$
+
+Let us look at the derivation a line at a time.
+
+1. The first line is just the back-door formula from earlier.
+2. The second line writes the probability $Pr(M|P, C)$ as the marginalization over the joint probability $Pr(M, E|P, C)$.
+3. The third line writes the joint $Pr(M, E|P, C)$ as the product of the conditional probability $Pr(M|E, P, C)$ and $Pr(E|P, C)$.
+4. 
 
 
 References
