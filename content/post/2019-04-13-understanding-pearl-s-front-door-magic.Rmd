@@ -253,7 +253,7 @@ Note that this is the same _backdoor formula_ we derived earlier by appealing to
 
 References
 -----------
-1. [If correlation doesn’t imply causation, then what does?](http://www.michaelnielsen.org/ddi/if-correlation-doesnt-imply-causation-then-what-does/), by Michael Nielsen. A excellent exposition of the basic concepts of causal calculus. A good place to start for the beginner 
+1. [If correlation doesn’t imply causation, then what does?](http://www.michaelnielsen.org/ddi/if-correlation-doesnt-imply-causation-then-what-does/), by Michael Nielsen. A excellent exposition of the basic concepts of causal calculus. A good place to start for the beginner. 
 2. [The Book of Why](http://bayes.cs.ucla.edu/WHY/), by Judea Pearl & Dana Mackenzie. You would do well read this book by the father of modern causal reasoning intended for the popular audience. 
 3. [Lecture Notes](https://www.stat.cmu.edu/~cshalizi/uADA/12/), by Cosma Shalizi. This is an excellent resource for slightly more technical material but presented in a very engaging manner, not only about causality but other statistical topics.
 

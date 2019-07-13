@@ -6,10 +6,20 @@
     <description>Recent content in Home on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Understanding Pearl&#39;s Front-Door Magic</title>
+      <link>/post/2019/07/06/understanding-pearl-s-front-door-magic-ii/</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019/07/06/understanding-pearl-s-front-door-magic-ii/</guid>
+      <description>Do-calculus, Judea Pearl’s comprehensive algorithmic framework for causal reasoning, can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns – namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) from the back-door formula without invoking the rules of do-calculus.
+In a previous post I attempted to explain the distinction between Bayesian and causal (or interventional) conditioning by introducing the do notation.</description>
+    </item>
     
     <item>
       <title>Simulation View of Causality</title>

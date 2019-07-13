@@ -6,15 +6,24 @@
     <description>Recent content in Tags on Notes To An Earlier Self</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>back-door criterion</title>
+      <link>/tags/back-door-criterion/</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/back-door-criterion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>causal conditioning</title>
       <link>/tags/causal-conditioning/</link>
-      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/causal-conditioning/</guid>
       <description></description>
@@ -23,7 +32,7 @@
     <item>
       <title>do calculus</title>
       <link>/tags/do-calculus/</link>
-      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/do-calculus/</guid>
       <description></description>
@@ -32,7 +41,7 @@
     <item>
       <title>front-door criterion</title>
       <link>/tags/front-door-criterion/</link>
-      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/front-door-criterion/</guid>
       <description></description>

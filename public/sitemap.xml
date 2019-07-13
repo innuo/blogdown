@@ -4,54 +4,65 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/causality/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/2019/07/06/understanding-pearl-s-front-door-magic-ii/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/back-door-criterion/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/causal-conditioning/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/do-calculus/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/front-door-criterion/</loc>
+    <lastmod>2019-07-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/</loc>
     <lastmod>2019-05-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/causal-conditioning/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/do-calculus/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/front-door-criterion/</loc>
-    <lastmod>2019-05-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
