@@ -27,7 +27,7 @@ In a previous post I attempted to explain the distinction between Bayesian and c
       <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
       
       <guid>/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/</guid>
-      <description>div.blue pre.r { background-color:azure; } div.blue pre { background-color:#ffe2dd; }  My attempt to present an intuitive account of causal reasoning and the important notions of causal conditioning and counterfactuals without resorting to some of the formalities of do-calculus, d-separation, couterfactual notation and the like. All the programs in the post will be in R, but should be accessible to readers with no experience with the language.
+      <description>div.blue pre.r { background-color:azure; } div.blue pre { background-color:#ffe2dd; }  My attempt to present an intuitive account of causal reasoning and the important notions of causal conditioning and counterfactuals without resorting to some of the formalities of do-calculus, d-separation, counterfactual notation and the like. All the programs in the post will be in R, but should be accessible to readers with no experience with the language.
 Causal reasoning from scientific data has undergone a quiet revolution in the past couple of decades.</description>
     </item>
     
