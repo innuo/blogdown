@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Notes To An Earlier Self</title>
@@ -8,7 +7,7 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 06 Jul 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,6 +18,15 @@
       <guid>/post/2019/07/06/understanding-pearl-s-front-door-magic-ii/</guid>
       <description>Do-calculus, Judea Pearl’s comprehensive algorithmic framework for causal reasoning, can intimidate even a seasoned statistician. I will try to present an intuitive justification of a couple of its common patterns – namely the back-door and, the seemingly magical, front-door adjustment formulas. Along the way I will derive the front-door formula (for a special case) from the back-door formula without invoking the rules of do-calculus.
 In a previous post I attempted to explain the distinction between Bayesian and causal (or interventional) conditioning by introducing the do notation.</description>
+      
+            <category>do-calculus</category>
+      
+            <category>causal conditioning</category>
+      
+            <category>back-door criterion</category>
+      
+            <category>front-door criterion</category>
+      
     </item>
     
     <item>
@@ -29,6 +37,13 @@ In a previous post I attempted to explain the distinction between Bayesian and c
       <guid>/post/2019/05/18/understanding-pearl-s-front-door-magic-part-i/</guid>
       <description>div.blue pre.r { background-color:azure; } div.blue pre { background-color:#ffe2dd; }  My attempt to present an intuitive account of causal reasoning and the important notions of causal conditioning and counterfactuals without resorting to some of the formalities of do-calculus, d-separation, couterfactual notation and the like. All the programs in the post will be in R, but should be accessible to readers with no experience with the language.
 Causal reasoning from scientific data has undergone a quiet revolution in the past couple of decades.</description>
+      
+            <category>front-door criterion</category>
+      
+            <category>do calculus</category>
+      
+            <category>causal conditioning</category>
+      
     </item>
     
     <item>
@@ -39,6 +54,13 @@ Causal reasoning from scientific data has undergone a quiet revolution in the pa
       <guid>/post/2019/03/25/crossvalidation-and-the-disappointed-optimizer/</guid>
       <description>Wherein I introduce and explain the well-studied mechanism behind the pervasive phenomenon in life of things being just a bit worse than expected. I will walk through some of the discussion in the excellent article, The Optimizer’s Curse: Skepticism and Postdecision Surprise in Decision Analysis by Smith and Winkler.
 Have you noticed that the checkout lanes you choose at the grocery store tend to be slower than you expected, the products you order off Amazon disappoint, and your second dates are not as exciting as your firsts?</description>
+      
+            <category>Selection bias</category>
+      
+            <category>Crossvalidation</category>
+      
+            <category>Postdecision suprise</category>
+      
     </item>
     
     <item>
@@ -49,7 +71,17 @@ Have you noticed that the checkout lanes you choose at the grocery store tend to
       <guid>/post/2019/03/09/extrapolating-by-inverse-optimization/</guid>
       <description>Wherein I present a simple example of a prediction problem modeled as inverse optimization and its formulation as a bilevel optimization problem, with a brief detour into Bayesian estimation.
 Our story begins with Alice who runs a grocery store with a small selection of locally grown produce. Alice wishes to estimate the impacts of changing the prices of her produce on the purchase behavior of her customers and wonders if the data she has been collecting over the previous year can help.</description>
+      
+            <category>Inverse Optimization</category>
+      
+            <category>Linear programming</category>
+      
+            <category>Approximate Bayesian Computation</category>
+      
+            <category>Bilevel Optimization</category>
+      
     </item>
     
   </channel>
 </rss>
+
