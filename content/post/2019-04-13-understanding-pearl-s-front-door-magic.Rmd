@@ -27,11 +27,11 @@ Imagine that a meticulous solar-scientist named Sol is tasked with estimating th
 
 Before tackling the panel washing problem, Sol analyzes his data and incorporates known physical principles to construct a _generative model_ for the data generating process. (Recall that a generative model is a story that we believe about a physical process written down in the language of probabilities.)
 
-Commonsense tells Sol that clouds cause rain and that clouds cause a drop in energy production, while rain increases production by washing away the dirt on the panels. A graphical depiction (called the _causal graph_) of Sol's mental model of the causal story hidden in the data is
+Commonsense tells Sol that clouds cause rain and that clouds cause a drop in energy production, while rain increases production by washing away the dirt on the panels. A graphical depiction (called the _causal graph_) of Sol's mental model of the _causal_ story hidden in the data is
 
 ![](/post/2019-04-13-understanding-pearl-s-front-door-magic_files/solar_graph.png){width=30%}
 
-He estimates the necessary parameters of his model from the data, and implements his model as shown below to simulate behaviors or instances of the physical proess (i.e, generate joint samples of $(C, R, E)$.
+He estimates the necessary parameters of his causal model from the data, and implements his model as shown below to simulate behaviors or instances of the physical process (i.e, generate joint samples of $(C, R, E)$.
 
 <div class = "blue">
 ```{r}
@@ -58,9 +58,9 @@ df$R <- factor(df$R)
 ggplot(aes(E, fill = R, color = R), data=df) + geom_density(alpha = 0.1)+ggtitle("P(E | R)")#+theme_bw() 
 ```
 
-According to the distribution defined by the simulator the hightest energy production tends to happen in weeks with no rain. This is perhaps mildly surpising for someone who hasn't heard of _confounding_; the data shows this because both rain and energy are affected by their common cause -- cloudiness.
+According to the distribution defined by the simulator the highest energy production tends to happen in weeks with no rain. This is perhaps mildly surpising for someone who hasn't heard of _confounding_; the data shows this because both rain and energy are affected by their common cause -- cloudiness. This implies that we cannot infer _causation_ from the observed _correlation_ between rain and energy production.  
 
-Sol rewrites his simulator making the noise variables explicit as well as adding some optional arguments to override some of the computations as follows
+Sol rewrites his simulator making the noise variables explicit, as well as adding some optional arguments to override some of the computations as follows
 
 <div class = "blue">
 ```{r}
@@ -96,7 +96,7 @@ The underlying model can more clearly be depicted as
 
 The randomness in the simulator is owed only to the _indepdendent_ noise variables $U_C$, $U_R$ and $U_E$; the variables $C$, $R$ and $E$ are _deterministic_ functions of the variables they _listen to_ (to borrow a phrase that Judea Pearl populalized). We can think of the values taken by the noise variables $U_C$, $U_R$ and $U_E$ for any sample as _defining_ that sample. They give the sample its _individuality_ as it were.
 
-A model with this structure is termed a _Structural Causal Model_, which I only mention to prime you to its encounter in future wanderings.    
+A model with this structure is termed a _Structural Causal Model_, which I only mention to prime you to its encounter in future wanderings. It is a probabilistic model with additional causal assumptions.
 
 The awesome power conferred by a simulator in one's possession brings a temptation to meddle that is hard to resist even for an old testament god, let alone a mere solar scientist. Sol dutifully proceeds to meddle.
 
@@ -146,7 +146,7 @@ Now might be a good juncture to break for rest and to take in the scenery. As a 
 
 Counterfactuals
 ---------------
-As noted above for any one sample from the model, the particular values assumed by the random variables $U_C$, $U_R$ and $U_E$ for that sample completely specify it, and together represent a particular week in our universe. In other words, we can _define_ an individual week by _assigning_ specific values to these random variables. 
+As noted above, for any one sample from the model, the particular values assumed by the random variables $U_C$, $U_R$ and $U_E$ for that sample completely specify it, and together represent a particular week in our universe. In other words, we can _define_ an individual week by _assigning_ specific values to these random variables. 
 
 Let us generate a _single_ sample from, Sol's simulator. 
 
@@ -158,7 +158,7 @@ kable(week_a, format="html", digits = 2) ## print the sample
 ```
 </div>
 
-We can now ask the following question. _What would the energy prodcution have been in this week had it not rained at all?_ This is what we call a _counterfactual_; a question about events in a universe where they unfolded contrary to those in our actual factual universe. 
+We can now ask the following question. _What would the energy production have been in this week had it not rained at all?_ This is what we call a _counterfactual_; a question about events in a universe where they unfolded contrary to those in our actual factual universe. 
 
 What does this counterfactual question mean? Colloquially it means, "_all else being equal_ how would the energy production $E$ have changed to if we had set $R$ to zero?". Clearly the "all else" does not include $E$ itself. We only mean that while not changing anything that gives this week its _individuality_ how does intervening on $R$ affect $E$. 
 
@@ -171,7 +171,7 @@ kable(counterfactual_week_a, format="html", digits = 2)
 ```
 </div>
 
-We estimate that the energy production _would have been_ 227 Mwh ((instead of the 328 Mwh that was _actually observed_) had it not rained _in that particular week_.  Note that because all the noise variables are fixed there is no stochasticity left in the simulator -- it would produce exactly the same vector of observations no matter how many times we run it.
+We estimate that the energy production _would have been_ 227 Mwh ((instead of the 328 Mwh that was _actually observed_) had it not rained _in that particular week_.  Note that because all the noise variables are fixed, there is no stochasticity left in the simulator -- it would produce exactly the same vector of observations no matter how many times we run it.
 
 We can perform this $do(R=0)$ counterfactual computation for every instance in our universe. Because of the lack of stochasticity in counterfactual sample, there is a one-to-one correspondence between every example in the factual universe and those in the counterfactual universe. 
 
@@ -200,7 +200,7 @@ plot(density(df_intervention$E[df_intervention$R == 0]), col="blue",
 lines(density(df_counterfactual[["E_r"]]), col="red")
 ```
 </div>
-Perhaps surprisingly they turn out to be the same. A moment's reflection about how these two distributions were generated from Sol's simulator should convince you that the inteventional distribution obtained by causal conditioning is _precisely_ the summary of counterfactuals over all the instances. In fact the interventional distribution $P(E|do(R=r))$ is could more precisely be written as $P(E_r|R_r = r)$. (Note that this is __non-standard notation__ but it makes it easier for me to keep everything straight.)
+Perhaps surprisingly they turn out to be the same. A moment's reflection about how these two distributions were generated from Sol's simulator should convince you that the inteventional distribution obtained by causal conditioning is _precisely_ the summary of counterfactuals over all the instances. In fact the interventional distribution $P(E|do(R=r))$ could more precisely be written as $P(E_r|R_r = r)$. (Note that this is __non-standard notation__ but it makes it easier for me to keep everything straight.)
 
 The notion of counterfactuals is therefore more fundamental than the notion of causal conditioning or interventional distributions. All interventional questions could be answered by generating counterfactual samples, and then appropriately conditioning and aggregating them.
 
@@ -222,7 +222,9 @@ sample_counterfactual(c, r, e){ ## single week observation = (c, r, e)
 
 Note that this procedure is no longer one-to-one; for a given week we obtain a _distribution_ over the energy production in the counterfactual "no-rain" universe. 
 
-To summarize, the procedure to answer causal questions is to translate it into a description of the variables to _fix_ in the simulator, and of how to filter and aggregate the generated samples. In the happy situation where we have a fully-fledged generative model (and hence a simulator) that can generate joint samples of all the variables in the physical process the preceeding discussion is (almost) the entire story.
+To summarize, the procedure to answer causal questions is to translate it into a description of the variables to _fix_ in the simulator, and of how to filter and aggregate the generated samples. 
+
+In the happy situation where we have a fully-fledged causal probabilistic model (and hence a simulator) that can generate joint samples of all the variables in the physical process the preceeding discussion is (almost) the entire story.
 
 
 Unhappy Situations
@@ -244,10 +246,10 @@ causal.effect(y="E", x="R", G = g)      ## produce the formula for P(E | do(R))
 ```
 </div>
 
-Note that this is the same _backdoor formula_ we derived earlier by appealing to specific features of our simulator, which here was produced _programmatically_.
+Note that this is the same _backdoor formula_ that we derived earlier by appealing to specific features of our simulator, which here was produced _programmatically_.
 
 - __Graph unknown, data with all variables measured__. Estimating the  causal structure is much easier if the data can be measured "actively", that is, by actually intervening in the system that you are studying. This is not a luxury that is available in most circumstances. Several algorithms have been proposed that exploit the Markov independences implied by a causal structure (under another fairly mild assumption called _faithfulness_) to estimate (the estimable parts of) the causal graph from passively collected data. 
-- __Graph unknown, not all variables measured__. Even when not all the variables in the graph are measured certain facts about the causal structure can be inferred from the incomplete data. I do not understand this topic well enough to say more.
+- __Graph unknown, not all variables measured__. Even when not all the variables in the graph are measured, certain facts about the causal structure can be inferred from the incomplete data. I do not understand this topic well enough to say more.
 - __Graph unknown, no data__. If you happen to find yourself in this situation, you should probably seek out a Bodhisattva to help with your counterfactual questions.
 
 
